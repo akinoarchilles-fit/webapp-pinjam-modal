@@ -2,9 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import PaperComponent from '../components/paper';
-import { View } from '../components/Themed';
 import { FontWeightConfig } from '../resources/FontConfig';
 import Fonts from '../resources/Fonts';
 
@@ -13,12 +12,16 @@ export default function SuccessApplyScreen() {
   function onBackPress() {
     navigation.reset({
       index: 0,
+      routes: [
+        {
+          name: 'Landing',
+        },
+      ],
     });
   }
   
   return (
     <View style={styles.container}>
-
       <StatusBar backgroundColor={'#2ECC71'} />
       <View style={{alignItems: 'center', backgroundColor: '#2ECC71'}}>
         <Image

@@ -1,7 +1,7 @@
 
 import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, TextStyle, View} from 'react-native';
 import {Appbar as PaperAppbar} from 'react-native-paper';
 import Constants from '../../resources/Constants';
 import { FontWeightConfig } from '../../resources/FontConfig';
@@ -19,6 +19,17 @@ function Appbar ({
   rightComponent,
   showHelp,
   onHelpPress,
+}: {
+  type: string,
+  appbarStyle: Object | undefined,
+  title: string | undefined,
+  titleContainerStyle: Object | undefined,
+  titleStyle: TextStyle | undefined,
+  onClick: Function | undefined,
+  hideLeftComponent: boolean | undefined,
+  rightComponent: Array<Object>,
+  showHelp: boolean | undefined,
+  onHelpPress: Function | undefined,
 }) {
   const navigation = useNavigation();
   const theme = useTheme();

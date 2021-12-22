@@ -1,12 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import { Text, View } from '../components/Themed';
+import { Image, Platform, StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import PaperComponent from '../components/paper';
 
 export default function LandingScreen() {
   const navigation = useNavigation();
+
+  const theme = useTheme();
 
   function onStartPress() {
     navigation.navigate('Register');
@@ -14,12 +16,12 @@ export default function LandingScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pinjam Modal Pinjaman Partner</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Image source={require('../assets/images/pm-full-logo.webp')} style={styles.logo}/>
+      <PaperComponent.Headline style={styles.title}>Pinjaman Partner</PaperComponent.Headline>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-
-      <Button onPress={onStartPress}>Mulai ajukan</Button>
+      <View style={[styles.separator, { backgroundColor: 'white'}]}/>
+      <PaperComponent.Button onPress={onStartPress}>Mulai ajukan</PaperComponent.Button>
     </View>
   );
 }
@@ -39,4 +41,10 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  logo: {
+    width: 700,
+    height: 100,
+    resizeMode: 'contain',
+    marginBottom: 40
+  }
 });
