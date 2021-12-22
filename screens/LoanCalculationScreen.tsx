@@ -17,51 +17,54 @@ export default function LoanCalculationScreen() {
   }
   
   return (
-    <View style={[styles.container, { borderColor: theme.colors.surface}]}>
-      <PaperComponent.Headline style={styles.title}>Tentukan Nilai & Tenor Pinjaman</PaperComponent.Headline>
-      <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+    <View style={styles.main}>
 
-      <View style={styles.formContainer}>
-        <View style={styles.formField}>
-          <PaperComponent.Title>Nilai Pinjaman</PaperComponent.Title>
-          <Slider
-            style={{height: 40}}
-            minimumValue={0}
-            maximumValue={1}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-            thumbTintColor={theme.colors.primary}
-          />
+      <View style={[styles.container, { borderColor: theme.colors.surface}]}>
+        <PaperComponent.Headline style={styles.title}>Tentukan Nilai & Tenor Pinjaman</PaperComponent.Headline>
+        <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
+        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+
+        <View style={styles.formContainer}>
+          <View style={styles.formField}>
+            <PaperComponent.Title>Nilai Pinjaman</PaperComponent.Title>
+            <Slider
+              style={{height: 40}}
+              minimumValue={0}
+              maximumValue={1}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#000000"
+              thumbTintColor={theme.colors.primary}
+            />
+          </View>
+          <View style={styles.formField}>
+            <PaperComponent.Title>Tenor Pinjaman</PaperComponent.Title>
+            <Slider
+              style={{height: 40}}
+              minimumValue={0}
+              maximumValue={1}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#000000"
+              thumbTintColor={theme.colors.primary}
+            />
+          </View>
         </View>
-        <View style={styles.formField}>
-          <PaperComponent.Title>Tenor Pinjaman</PaperComponent.Title>
-          <Slider
-            style={{height: 40}}
-            minimumValue={0}
-            maximumValue={1}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-            thumbTintColor={theme.colors.primary}
-          />
+        <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
+        <View style={styles.formContainer}>
+          <View style={[styles.formField, styles.rowField]}>
+            <PaperComponent.Title>Bunga</PaperComponent.Title>
+            <PaperComponent.Subheading>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+          </View>
+          <View style={[styles.formField, styles.rowField]}>
+            <PaperComponent.Title>Biaya Admin</PaperComponent.Title>
+            <PaperComponent.Subheading>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+          </View>
+          <View style={[styles.formField, styles.rowField]}>
+            <PaperComponent.Title>Total Pengembalian</PaperComponent.Title>
+            <PaperComponent.Subheading>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+          </View>
         </View>
+        <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
       </View>
-      <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
-      <View style={styles.formContainer}>
-        <View style={[styles.formField, styles.rowField]}>
-          <PaperComponent.Title>Bunga</PaperComponent.Title>
-          <PaperComponent.Subheading>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
-        </View>
-        <View style={[styles.formField, styles.rowField]}>
-          <PaperComponent.Title>Biaya Admin</PaperComponent.Title>
-          <PaperComponent.Subheading>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
-        </View>
-        <View style={[styles.formField, styles.rowField]}>
-          <PaperComponent.Title>Total Pengembalian</PaperComponent.Title>
-          <PaperComponent.Subheading>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
-        </View>
-      </View>
-      <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
@@ -73,6 +76,9 @@ export default function LoanCalculationScreen() {
 }
 
 const styles = StyleSheet.create({
+  main: {
+    flex: 1
+  },
   container: {
     padding: 20,
     alignItems: 'center',

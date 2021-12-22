@@ -12,6 +12,7 @@ declare global {
 }
 
 export type RootStackParamList = {
+  TermsCondition: undefined;
   Landing: undefined;
   Register: undefined;
   LoanCalculation: undefined;

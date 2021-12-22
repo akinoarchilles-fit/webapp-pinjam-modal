@@ -12,25 +12,19 @@ export default function TermsConditionScreen() {
   const theme = useTheme();
 
   function onNextPress() {
-    navigation.navigate('Success');
+    navigation.navigate('Register');
   }
   
   return (
-    <View style={[styles.container, { borderColor: theme.colors.surface}]}>
-      <PaperComponent.Headline style={styles.title}>Syarat dan Ketentuan</PaperComponent.Headline>
-      <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+    <View style={styles.main}>
+      <View style={[styles.container, { borderColor: theme.colors.surface}]}>
+        <PaperComponent.Headline style={styles.title}>Syarat dan Ketentuan</PaperComponent.Headline>
+        <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
+        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
-      <View style={styles.formContainer}>
-        <View style={styles.rowField}>
-          <Checkbox.Item label="Item" status="checked" />
-          <PaperComponent.Text>Dengan mengisi formulir ini, saya menyatakan semua data yang saya berikan adalah benar dan akurat.
-</PaperComponent.Text>
-        </View>
-        <View style={styles.rowField}>
-          <Checkbox.Item label="Item" status="checked" />
-          <PaperComponent.Text>Dengan ini saya telah mengetahui, membaca, serta menyetujui syarat dan ketentuan dan Kebijakan Privasi dari PINJAMMODAL.
-</PaperComponent.Text>
+        <View style={styles.formContainer}>
+          <Checkbox.Item status="checked" position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan mengisi formulir ini, saya menyatakan semua data yang saya berikan adalah benar dan akurat." />
+          <Checkbox.Item status="checked" position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan ini saya telah mengetahui, membaca, serta menyetujui syarat dan ketentuan dan Kebijakan Privasi dari PINJAMMODAL."/>
         </View>
       </View>
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
@@ -44,6 +38,9 @@ export default function TermsConditionScreen() {
 }
 
 const styles = StyleSheet.create({
+  main: {
+    flex: 1
+  },
   container: {
     padding: 20,
     alignItems: 'center',
@@ -54,7 +51,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 30
+    marginVertical: 20
   },
   separator: {
     height: 2,
@@ -67,7 +64,4 @@ const styles = StyleSheet.create({
     margin: 10,
     width: '100%'
   },
-  rowField: {
-    flexDirection: 'row',
-  }
 });

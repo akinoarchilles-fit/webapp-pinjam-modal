@@ -11,7 +11,7 @@ export default function LandingScreen() {
   const theme = useTheme();
 
   function onStartPress() {
-    navigation.navigate('Register');
+    navigation.navigate('TermsCondition');
   }
 
   return (

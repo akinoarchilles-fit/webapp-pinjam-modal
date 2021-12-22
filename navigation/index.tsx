@@ -17,6 +17,7 @@ import OTPVerificationScreen from '../screens/OTPVerificationScreen';
 import PersonalDataScreen from '../screens/PersonalDataScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import SuccessApplyScreen from '../screens/SuccessApply';
+import TermsConditionScreen from '../screens/TermsConditionScreen';
 import { RootStackParamList } from '../types';
 
 
@@ -42,6 +43,7 @@ function RootNavigator() {
       <View style={styles.viewport}>
         <Stack.Navigator>
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
+          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ title: 'Syarat dan Ketentuan' }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Daftar' }} />
           <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ title: 'Tentukan Nilai & Tenor Pinjaman' }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ title: 'Unggah Dokumen' }} />
