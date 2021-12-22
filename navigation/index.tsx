@@ -41,15 +41,15 @@ function RootNavigator() {
     <View style={{backgroundColor: theme.colors.background}}>
       <View style={styles.viewport}>
         <Stack.Navigator>
-          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ title: 'Verifikasi OTP' }} />
-          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ title: 'Isi Data Keterangan Tambahan' }} />
-          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ title: 'Isi Data Rekening Pribadi' }} />
-          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ title: 'Isi Data Toko Online' }} />
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Daftar' }} />
           <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ title: 'Tentukan Nilai & Tenor Pinjaman' }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ title: 'Unggah Dokumen' }} />
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
+          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ title: 'Isi Data Toko Online' }} />
+          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ title: 'Isi Data Rekening Pribadi' }} />
+          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ title: 'Isi Data Keterangan Tambahan' }} />
+          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ title: 'Verifikasi OTP' }} />
           <Stack.Screen name="Success" component={SuccessApplyScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
           <Stack.Group  screenOptions={{ presentation: 'modal' }}>
