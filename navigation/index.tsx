@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Dimensions, Platform, StyleSheet, useColorScheme, View } from 'react-native';
 import { Provider as PaperProvider, useTheme } from 'react-native-paper';
@@ -33,7 +33,6 @@ export default function Navigation() {
     </PaperProvider>
   );
 }
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
@@ -42,19 +41,19 @@ function RootNavigator() {
     <View style={{backgroundColor: theme.colors.background}}>
       <View style={styles.viewport}>
         <Stack.Navigator>
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ title: 'Syarat dan Ketentuan' }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Daftar' }} />
           <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ title: 'Tentukan Nilai & Tenor Pinjaman' }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ title: 'Unggah Dokumen' }} />
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
           <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ title: 'Isi Data Toko Online' }} />
           <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ title: 'Isi Data Rekening Pribadi' }} />
           <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ title: 'Isi Data Keterangan Tambahan' }} />
           <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ title: 'Verifikasi OTP' }} />
           <Stack.Screen name="Success" component={SuccessApplyScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-          <Stack.Group  screenOptions={{ presentation: 'modal' }}>
+          <Stack.Group>
             <Stack.Screen name="OptionForm" component={OptionForm} options={{headerShown: false}}/>
             <Stack.Screen name="DateForm" component={DateForm} options={{headerShown: false}}/>
           </Stack.Group>

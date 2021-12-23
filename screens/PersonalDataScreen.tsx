@@ -46,7 +46,7 @@ export default function PersonalDataScreen() {
         <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
         <View style={styles.formContainer}>
-          <View style={[styles.formField]}>
+          <View style={[styles.formField, { paddingHorizontal: 15 }]}>
             <PaperComponent.Subheading>Jenis Kelamin</PaperComponent.Subheading>
             {
               genders.map((e, i) => {
@@ -86,7 +86,10 @@ export default function PersonalDataScreen() {
               activeOpacity={0.8}
               onPress={Lodash.debounce(
                 () =>
-                  navigation.navigate('OptionForm'),
+                  navigation.navigate('OptionForm', {
+                    alias: 'Agama',
+                    onPressHandler: ()=>{}
+                  }),
                 1000,
                 {
                   leading: true,
@@ -105,7 +108,10 @@ export default function PersonalDataScreen() {
                 underlineColorAndroid={'transparent'}
                 onPressIn={Lodash.debounce(
                   () =>
-                    navigation.navigate('OptionForm'),
+                    navigation.navigate('OptionForm', {
+                      alias: 'Agama',
+                      onPressHandler: ()=>{}
+                    }),
                   1000,
                   {
                     leading: true,
@@ -116,7 +122,10 @@ export default function PersonalDataScreen() {
                   <TextInput.Icon
                     name={'chevron-down'}
                     onPress={() =>
-                      navigation.navigate('OptionForm')
+                      navigation.navigate('OptionForm', {
+                        alias: 'Agama',
+                        onPressHandler: ()=>{}
+                      })
                     }
                   />
                 }
@@ -286,7 +295,7 @@ export default function PersonalDataScreen() {
         </View>
       </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+      <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
         leading: true,
         trailing: false,
       })} buttonStyle={styles.btnNext}>

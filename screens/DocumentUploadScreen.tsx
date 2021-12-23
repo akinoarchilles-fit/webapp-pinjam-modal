@@ -24,7 +24,7 @@ export default function DocumentUploadScreen() {
   ]);
 
   function onNextPress() {
-    navigation.navigate('Success');
+    navigation.navigate('PersonalData');
   }
 
   async function uploadDocument(index: number) {
@@ -65,7 +65,8 @@ export default function DocumentUploadScreen() {
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={styles.btnNext}>
+        })} buttonStyle={styles.btnNext}
+        disabled={!(documents.every(e => e.data))}>
         Lanjutkan
       </PaperComponent.Button>
     </View>
@@ -100,11 +101,8 @@ const styles = StyleSheet.create({
   boldText: {
     letterSpacing: 0.4,
   },
-  btnNext: {
-    marginTop: 30
-  },
   formContainer: {
-    padding: 10,
+    padding: 20,
     width: '100%'
   },
   formField: {
@@ -116,5 +114,9 @@ const styles = StyleSheet.create({
     height: 150,
     width: '100%',
     resizeMode: 'contain'
+  },
+  btnNext: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
   }
 });

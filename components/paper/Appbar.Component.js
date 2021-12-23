@@ -1,8 +1,8 @@
 
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TextStyle, View} from 'react-native';
-import {Appbar as PaperAppbar} from 'react-native-paper';
+import {Appbar as PaperAppbar, useTheme} from 'react-native-paper';
 import Constants from '../../resources/Constants';
 import { FontWeightConfig } from '../../resources/FontConfig';
 import Fonts from '../../resources/Fonts';

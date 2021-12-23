@@ -30,7 +30,6 @@ function OptionForm ({
   return (
     <View style={styles.screen}>
       <Modal
-      
         isVisible={showModal}
         onBackButtonPress={() => setShowModal(false)}
         onBackdropPress={() => setShowModal(false)}

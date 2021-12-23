@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
   },
   formContainer: {
-    padding: 10,
+    padding: 20,
     width: '100%'
   },
   formField: {

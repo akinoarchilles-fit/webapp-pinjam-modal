@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'  
   },
   formContainer: {
-    padding: 10,
+    padding: 20,
     width: '100%'
   },
   formField: {

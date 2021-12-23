@@ -114,7 +114,7 @@ export default function BankingDataScreen() {
           </View>
         </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+      <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
         leading: true,
         trailing: false,
       })} buttonStyle={styles.btnNext}>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
   },
   formContainer: {
-    padding: 10,
+    padding: 20,
     width: '100%'
   },
   formField: {

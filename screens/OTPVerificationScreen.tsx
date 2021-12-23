@@ -45,7 +45,7 @@ export default function OTPVerificationScreen() {
                   <PaperComponent.Input
                     inputStyle={{textAlign: 'center'}}
                     value={value}
-                    error={errors.facebook}
+                    error={errors.otp}
                     editable={true}
                     onChangeText={(value: string) => onChange(value)}
                   />
@@ -55,7 +55,7 @@ export default function OTPVerificationScreen() {
           </View>
         </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+      <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
         leading: true,
         trailing: false,
       })} buttonStyle={styles.btnNext}>

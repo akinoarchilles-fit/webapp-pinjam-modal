@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   formContainer: {
-    padding: 10,
+    padding: 20,
     width: '100%'
   },
   btnNext: {
