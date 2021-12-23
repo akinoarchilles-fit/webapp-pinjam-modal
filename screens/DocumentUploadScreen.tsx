@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
-import { Alert, Image, Platform, StyleSheet, View } from 'react-native';
+import { Alert, Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
 import * as DocumentPicker from 'expo-document-picker';
@@ -37,29 +37,31 @@ export default function DocumentUploadScreen() {
   
   return (
     <View style={styles.main}>
-      <View style={[styles.container, { borderColor: theme.colors.surface}]}>
-        <PaperComponent.Headline style={styles.title}>Tentukan Nilai & Tenor Pinjaman</PaperComponent.Headline>
-        <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
-        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <ScrollView style={styles.main} contentContainerStyle={styles.scrollContainer}>
+        <View style={[styles.container, { borderColor: theme.colors.surface}]}>
+          <PaperComponent.Headline style={styles.title}>Tentukan Nilai & Tenor Pinjaman</PaperComponent.Headline>
+          <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
+          <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
-        <View style={styles.formContainer}>
-          {
-            documents.map((e, i) => (
-              <View key={i} style={styles.formField}>
-                <View style={{flex: 5}}>
-                  <PaperComponent.Title>{e.label}</PaperComponent.Title>
+          <View style={styles.formContainer}>
+            {
+              documents.map((e, i) => (
+                <View key={i} style={styles.formField}>
+                  <View style={{flex: 5}}>
+                    <PaperComponent.Title>{e.label}</PaperComponent.Title>
+                  </View>
+                  <View style={{flex: 5}}>
+                    {
+                      e.data ? <Image source={{uri: e.data}} style={styles.docImage}/> : 
+                      <PaperComponent.Button onPress={() => uploadDocument(i)}>Unggah</PaperComponent.Button>
+                    }
+                  </View>
                 </View>
-                <View style={{flex: 5}}>
-                  {
-                    e.data ? <Image source={{uri: e.data}} style={styles.docImage}/> : 
-                    <PaperComponent.Button onPress={() => uploadDocument(i)}>Unggah</PaperComponent.Button>
-                  }
-                </View>
-              </View>
-            ))
-          }
+              ))
+            }
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
@@ -72,14 +74,15 @@ export default function DocumentUploadScreen() {
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1
+    flex: 1,
   },
   container: {
-    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    margin: 30,  
+  },
+  scrollContainer: {
+    padding: 20
   },
   title: {
     fontSize: 20,
@@ -101,8 +104,7 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   formContainer: {
-    flex: 1,
-    margin: 10,
+    padding: 10,
     width: '100%'
   },
   formField: {

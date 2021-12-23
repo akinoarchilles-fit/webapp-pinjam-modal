@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 
 import PaperComponent from '../components/paper';
@@ -39,6 +39,7 @@ export default function PersonalDataScreen() {
 
   return (
     <View style={styles.main}>
+      <ScrollView style={styles.main} contentContainerStyle={styles.scrollContainer}>
       <View style={[styles.container, { borderColor: theme.colors.surface }]}>
         <PaperComponent.Headline style={styles.title}>Isi Data Diri</PaperComponent.Headline>
         <View style={[styles.separator, { backgroundColor: theme.colors.surface }]} />
@@ -284,6 +285,7 @@ export default function PersonalDataScreen() {
           </View>
         </View>
       </View>
+      </ScrollView>
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
         leading: true,
         trailing: false,
@@ -296,14 +298,15 @@ export default function PersonalDataScreen() {
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1
+    flex: 1,
   },
   container: {
-    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    margin: 30,
+  },
+  scrollContainer: {
+    padding: 20
   },
   title: {
     fontSize: 20,
@@ -321,20 +324,15 @@ const styles = StyleSheet.create({
   boldText: {
     letterSpacing: 0.4,
   },
-  btnNext: {
-    marginTop: 30
-  },
   formContainer: {
-    flex: 1,
-    margin: 10,
+    padding: 10,
     width: '100%'
   },
   formField: {
     marginVertical: 5,
   },
-  docImage: {
-    height: 150,
-    width: '100%',
-    resizeMode: 'contain'
+  btnNext: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
   }
 });

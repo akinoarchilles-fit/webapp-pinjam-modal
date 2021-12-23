@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Dimensions, StyleSheet, useColorScheme, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, useColorScheme, View } from 'react-native';
 import { Provider as PaperProvider, useTheme } from 'react-native-paper';
 import DateForm from '../components/overlay/date.overlay';
 import OptionForm from '../components/overlay/modal.overlay';
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   viewport: {
     justifyContent: 'center',
     alignSelf: 'center',
-    width: Dimensions.get('screen').width > 600 ? 480 : Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height
+    width: Dimensions.get('screen').width > 480 ? 480 : Dimensions.get('screen').width,
+    height: Platform.OS === 'web' ? '100vh' : '100%'
   }
 })
