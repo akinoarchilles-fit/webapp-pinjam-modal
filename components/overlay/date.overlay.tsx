@@ -1,32 +1,32 @@
-import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import DatePicker from "react-datepicker";
-import { KeyboardAvoidingView, Platform, StyleSheet, useColorScheme, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
+import Lodash from 'lodash';
 import Modal from 'react-native-modal';
-import { IconButton, useTheme } from "react-native-paper";
+import { IconButton, List, useTheme } from "react-native-paper";
 import Constants from '../../resources/Constants';
 import { FontWeightConfig } from '../../resources/FontConfig';
 import Fonts from '../../resources/Fonts';
+import { RootStackParamList } from '../../types';
 import PaperComponent from '../paper';
 
 function DateForm ({
-  alias,
-  onPressHandler,
-}:{ 
-  alias: string, 
-  onPressHandler: Function 
-}) {
-  const navigation = useNavigation();
+  route, navigation
+}:NativeStackScreenProps<RootStackParamList, 'DateForm'>) { 
   const theme = useTheme();
   const scheme = useColorScheme();
-
+  const { alias, data, selected, onPressHandler } = route.params;
   const [showModal, setShowModal] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(new Date());
 
   React.useEffect(() => {
     setShowModal(true);
   }, []);
+
+  function onPressDate(index: number) {
+    onPressHandler(index);
+    setShowModal(false);
+  }
 
   return (
     <View style={styles.screen}>
@@ -48,7 +48,7 @@ function DateForm ({
         <KeyboardAvoidingView
           enabled
           behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
-          <View
+          <ScrollView
             style={[
               styles.container,
               {
@@ -77,8 +77,43 @@ function DateForm ({
                 />,
               ]}
             />
-            <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />,
-          </View>
+            {data.map((item: any, i) => (
+              <List.Item
+                title={item}
+                titleStyle={styles.itemTitle}
+                titleNumberOfLines={2}
+                style={[
+                  styles.item,
+                  {borderColor: theme.colors.accent},
+                ]}
+                left={() => (
+                  <List.Icon
+                    icon={
+                      item && item.toString() && i == selected
+                        ? 'checkbox-marked-circle-outline'
+                        : 'circle-outline'
+                    }
+                    color={
+                      item && item.toString() && i == selected
+                        ? theme.colors.primary
+                        : theme.colors.accent
+                    }
+                  />
+                )}
+                onPress={Lodash.debounce(
+                  () =>
+                  item && item.toString() && i == selected
+                      ? setShowModal(false)
+                      : onPressDate(i),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}
+              />
+            ))}
+          </ScrollView>
         </KeyboardAvoidingView>
       </Modal>
     </View>
@@ -107,6 +142,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingTop: 10,
     maxHeight: Constants.screenHeight / 2,
+    minHeight: 200
   },
   item: {
     paddingVertical: 0,

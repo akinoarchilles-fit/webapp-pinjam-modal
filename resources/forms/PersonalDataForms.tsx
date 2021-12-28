@@ -1,27 +1,59 @@
 const PersonalDataForm = {
-  fullNameForm: {
-    key: 'storeName',
+  idCardNoForm: {
+    key: 'idNumber',
     value: '',
-    label: 'Nama',
-    placeHolder: 'Masukan nama toko',
+    label: 'Nomor KTP',
+    placeHolder: 'Masukan NIK',
     error: false,
-    errorMessage: '*Nama harus diisi',
-    regexPattern: /.*/,
+    errorMessage: '*Pastikan Nomor KTP sesuai',
+    regexPattern: /^\d{16}$/,
     keyboardType: 'default',
     inputType: 'text',
   },
-  phoneNumberForm: {
-    key: 'phoneNumber',
+  textOnlyForm: {
+    key: 'textOnly',
     value: '',
-    label: 'No. HP',
-    title: 'contoh: 628123xxxxxxxx',
-    placeHolder: 'Masukan nomor ponsel',
+    label: 'Tempat Lahir',
+    placeHolder: 'Tempat lahir',
     error: false,
-    errorMessage: 'Pastikan nomor ponsel benar',
-    regexPattern: /\+?([ -]?\d+)+|\(\d+\)([ -]\d+)/,
+    errorMessage: '*Tempat lahir harus diisi',
+    regexPattern: /^[A-Za-z.,]+$/,
+    keyboardType: 'default',
+    inputType: 'text',
+  },
+  numberOnlyForm: {
+    key: 'numberOnly',
+    value: '',
+    label: 'Telp. Rumah',
+    placeHolder: 'Telp. Rumah',
+    error: false,
+    errorMessage: '*Telp. Rumah tidak valid',
+    regexPattern: /^[0-9]+$/,
     keyboardType: 'phone-pad',
     inputType: 'phone-pad',
   },
+  religionList: [
+    'Buddha',
+    'Kristen',
+    'Katolik',
+    'Hindu',
+    'Islam',
+    'Konghucu'
+  ],
+  educationLevelList: [
+    'Sekolah Menengah Pertama',
+    'Sekolah Menegah Atas',
+    'Diploma',
+    'S1',
+    'S2',
+    'S3'
+  ],
+  maritalStatusList: [
+    'Lajang',
+    'Menikah',
+    'Cerai'
+  ],
 };
 
-export default OnlineStoreForm;
+
+export default PersonalDataForm;

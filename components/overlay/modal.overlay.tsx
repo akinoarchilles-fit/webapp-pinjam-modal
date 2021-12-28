@@ -9,23 +9,26 @@ import Fonts from '../../resources/Fonts';
 import Constants from '../../resources/Constants';
 import { FontWeightConfig } from '../../resources/FontConfig';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
 function OptionForm ({
-  alias,
-  onPressHandler,
-}:{ 
-  alias: string, 
-  onPressHandler: Function 
-}) {
-  const navigation = useNavigation();
+  route, navigation
+}:NativeStackScreenProps<RootStackParamList, 'OptionForm'>) { 
   const theme = useTheme();
   const scheme = useColorScheme();
+  const { alias, data, selected, onPressHandler } = route.params;
 
   const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
     setShowModal(true);
   }, []);
+
+  function onPressItem(index: number) {
+    onPressHandler(index);
+    setShowModal(false);
+  }
 
   return (
     <View style={styles.screen}>
@@ -77,8 +80,7 @@ function OptionForm ({
               ]}
             />
             <FlatList
-              data={[0,1,2,3,4,5]}
-              stickyHeaderIndices={[0]}
+              data={data}
               scrollEnabled={true}
               keyboardShouldPersistTaps={'handled'}
               showsVerticalScrollIndicator={false}
@@ -86,7 +88,7 @@ function OptionForm ({
               contentContainerStyle={{flexGrow: 1}}
               renderItem={({item, index}) => (
                 <List.Item
-                  title={item}
+                  title={typeof item === 'object' ? item.nama : item}
                   titleStyle={styles.itemTitle}
                   titleNumberOfLines={2}
                   style={[
@@ -96,12 +98,12 @@ function OptionForm ({
                   left={() => (
                     <List.Icon
                       icon={
-                        item && item.toString()
+                        item && item.toString() && index === selected
                           ? 'checkbox-marked-circle-outline'
                           : 'circle-outline'
                       }
                       color={
-                        item && item.toString()
+                        item && item.toString() && index === selected
                           ? theme.colors.primary
                           : theme.colors.accent
                       }
@@ -109,9 +111,9 @@ function OptionForm ({
                   )}
                   onPress={Lodash.debounce(
                     () =>
-                    item && item.toString()
+                    item && item.toString() && index === selected
                         ? setShowModal(false)
-                        : onPressHandler(item),
+                        : onPressItem(index),
                     1000,
                     {
                       leading: true,

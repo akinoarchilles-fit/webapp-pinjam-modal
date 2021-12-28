@@ -41,12 +41,12 @@ function RootNavigator() {
     <View style={{backgroundColor: theme.colors.background}}>
       <View style={styles.viewport}>
         <Stack.Navigator>
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ title: 'Syarat dan Ketentuan' }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Daftar' }} />
           <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ title: 'Tentukan Nilai & Tenor Pinjaman' }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ title: 'Unggah Dokumen' }} />
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
           <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ title: 'Isi Data Toko Online' }} />
           <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ title: 'Isi Data Rekening Pribadi' }} />
           <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ title: 'Isi Data Keterangan Tambahan' }} />

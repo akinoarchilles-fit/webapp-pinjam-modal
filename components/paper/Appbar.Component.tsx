@@ -1,8 +1,8 @@
 
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TextStyle, View} from 'react-native';
-import {Appbar as PaperAppbar, useTheme} from 'react-native-paper';
+import {Appbar as PaperAppbar} from 'react-native-paper';
 import Constants from '../../resources/Constants';
 import { FontWeightConfig } from '../../resources/FontConfig';
 import Fonts from '../../resources/Fonts';
@@ -64,17 +64,7 @@ function Appbar ({
         ]}
         pointerEvents={'box-none'}>
         <PaperAppbar.Content
-          title={
-            typeof title === 'string' && title !== ''
-              ? Constants.screenWidth < 400
-                ? title.length >= 25
-                  ? title.substring(0, 25).concat('...')
-                  : title
-                : title.length >= 30
-                  ? title.substring(0, 30).concat('...')
-                  : title
-              : title
-          }
+          title={title}
           titleStyle={[styles.headerTitle, titleStyle]}
           style={{
             alignItems: 'center',

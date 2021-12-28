@@ -23,8 +23,8 @@ export type RootStackParamList = {
   AdditionalData: undefined;
   OTPVerification: undefined;
   Success: undefined;
-  OptionForm: {alias: string, onPressHandler: Function} | undefined;
-  DateForm: undefined;
+  OptionForm: {alias: string, selected:number, data:Array<any>, onPressHandler: Function} | undefined;
+  DateForm: {alias: string, selected:number, data:Array<any>, onPressHandler: Function};
   NotFound: undefined;
 };
 
