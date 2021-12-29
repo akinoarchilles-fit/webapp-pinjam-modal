@@ -20,8 +20,12 @@ export default function DocumentUploadScreen() {
   const [documents, setDocuments] = React.useState<Document[]>([
     {label: 'Foto KTP', data: undefined},
     {label: 'Foto Selfie dengan KTP', data: undefined},
-    {label: 'Bukti Transaksi Usaha', data: undefined}
+    // {label: 'Bukti Transaksi Usaha', data: undefined}
   ]);
+
+  function onBackPress() {
+    navigation.canGoBack() ? navigation.goBack() : null
+  }
 
   function onNextPress() {
     navigation.navigate('PersonalData');
@@ -62,6 +66,13 @@ export default function DocumentUploadScreen() {
           </View>
         </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+        disabled={!navigation.canGoBack()}>
+        Kembali
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
@@ -115,8 +126,14 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'contain'
   },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
-  }
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
+  },
 });

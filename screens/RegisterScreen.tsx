@@ -6,19 +6,23 @@ import { Controller, useForm } from 'react-hook-form';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
-import Strings from './Strings';
+import RegisterForms from '../resources/forms/Register.validation';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
-  const {emailForm, fullNameForm, phoneNumberForm} = Strings;
-  const [passwordForm, setPasswordForm] = React.useState(Strings.passwordForm);
+  const {sellerIdForm, emailForm, fullNameForm, phoneNumberForm} = RegisterForms;
+  const [passwordForm, setPasswordForm] = React.useState(RegisterForms.passwordForm);
   const {
     handleSubmit,
     control,
     formState: {errors},
     getValues,
   } = useForm();
+
+  function onBackPress() {
+    navigation.canGoBack() ? navigation.goBack() : null
+  }
 
   function onRegisterPress() {
     navigation.navigate('LoanCalculation');
@@ -35,15 +39,15 @@ export default function RegisterScreen() {
         <View style={styles.formContainer}>
           <View style={styles.formField}>
             <Controller
-              name='email'
+              name={sellerIdForm.key}
               control={control}
-              rules={{required: true, pattern: emailForm.regexPattern}}
+              rules={{required: true, pattern: sellerIdForm.regexPattern}}
               defaultValue=''
               render={({field: {onChange, value}}) => (
                 <PaperComponent.Input
-                  item={emailForm}
+                  item={sellerIdForm}
                   value={value}
-                  error={errors.email}
+                  error={errors[sellerIdForm.key]}
                   editable={true}
                   onChangeText={(value: string) => onChange(value.trim().toLowerCase())}
                 />
@@ -52,7 +56,24 @@ export default function RegisterScreen() {
           </View>
           <View style={styles.formField}>
             <Controller
-              name='password'
+              name={emailForm.key}
+              control={control}
+              rules={{required: true, pattern: emailForm.regexPattern}}
+              defaultValue=''
+              render={({field: {onChange, value}}) => (
+                <PaperComponent.Input
+                  item={emailForm}
+                  value={value}
+                  error={errors[emailForm.key]}
+                  editable={true}
+                  onChangeText={(value: string) => onChange(value.trim().toLowerCase())}
+                />
+              )}
+            />
+          </View>
+          <View style={styles.formField}>
+            <Controller
+              name={passwordForm.key}
               control={control}
               rules={{required: true, minLength: 10}}
               defaultValue=''
@@ -60,7 +81,7 @@ export default function RegisterScreen() {
                 <PaperComponent.Input
                   item={passwordForm}
                   value={value}
-                  error={errors.password}
+                  error={errors[passwordForm.key]}
                   editable={true}
                   onChangeText={(value: string) => onChange(value.trim())}
                   right={
@@ -88,7 +109,7 @@ export default function RegisterScreen() {
           </View>
           <View style={styles.formField}>
             <Controller
-              name='fullName'
+              name={fullNameForm.key}
               control={control}
               rules={{required: true, pattern: fullNameForm.regexPattern}}
               defaultValue=''
@@ -96,7 +117,7 @@ export default function RegisterScreen() {
                 <PaperComponent.Input
                   item={fullNameForm}
                   value={value}
-                  error={errors.fullName}
+                  error={errors[fullNameForm.key]}
                   editable={true}
                   onChangeText={(value: string) => onChange(value)}
                 />
@@ -105,7 +126,7 @@ export default function RegisterScreen() {
           </View>
           <View style={styles.formField}>
             <Controller
-              name='phoneNumber'
+              name={phoneNumberForm.key}
               control={control}
               rules={{required: true, pattern: phoneNumberForm.regexPattern}}
               defaultValue=''
@@ -113,7 +134,7 @@ export default function RegisterScreen() {
                 <PaperComponent.Input
                   item={phoneNumberForm}
                   value={value}
-                  error={errors.phoneNumber}
+                  error={errors[phoneNumberForm.key]}
                   editable={true}
                   onChangeText={(value: string) => onChange(value)}
                 />
@@ -123,6 +144,13 @@ export default function RegisterScreen() {
         </View>
       </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+        disabled={!navigation.canGoBack()}>
+        Kembali
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onRegisterPress), 1000, {
           leading: true,
           trailing: false,
@@ -161,9 +189,15 @@ const styles = StyleSheet.create({
   boldText: {
     letterSpacing: 0.4,
   },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
   },
   btnRow: {
     flexDirection: 'row',

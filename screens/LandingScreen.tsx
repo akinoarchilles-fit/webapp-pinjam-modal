@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
+import Constants from '../resources/Constants';
 
 export default function LandingScreen() {
   const navigation = useNavigation();
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   logo: {
-    width: 700,
+    width: 400,
     height: 100,
     resizeMode: 'contain',
     marginBottom: 40

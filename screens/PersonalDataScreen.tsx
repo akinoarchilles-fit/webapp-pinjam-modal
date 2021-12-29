@@ -9,7 +9,7 @@ import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-
 import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import PaperComponent from '../components/paper';
-import PersonalDataForm from '../resources/forms/PersonalDataForms';
+import PersonalDataForm from '../resources/forms/PersonalData.validation';
 import PersonalDataService from '../services/PersonalDataService';
 
 export default function PersonalDataScreen() {
@@ -26,12 +26,22 @@ export default function PersonalDataScreen() {
   const [religion, setReligion] = React.useState(0);
   const [education, setEducation] = React.useState(0);
   const [maritalStatus, setMaritalStatus] = React.useState(0);
-  const [province, setProvince] = React.useState(0);
+  const [province, setProvince] = React.useState(-1);
   const [provinceList, setProvinceList] = React.useState<Array<any>>([]);
+  const [kabupaten, setKabupaten] = React.useState(-1);
+  const [kabupatenList, setKabupatenList] = React.useState<Array<any>>([]);
+  const [kecamatan, setKecamatan] = React.useState(-1);
+  const [kecamatanList, setKecamatanList] = React.useState<Array<any>>([]);
+  const [kelurahan, setKelurahan] = React.useState(-1);
+  const [kelurahanList, setKelurahanList] = React.useState<Array<any>>([]);
+  const [kodePos, setKodePos] = React.useState(-1);
+  const [kodePosList, setKodePosList] = React.useState<Array<any>>([]);
+  const [hasOnlineStore, setOnlineStore] = React.useState<number>(0);
+  const onlineStoreList = ['Ya', 'Tidak'];
 
   React.useEffect(() => {
     PersonalDataService.getProvince().then((provinces:any) => setProvinceList(provinces));
-  })
+  }, [])
 
   const {
     handleSubmit,
@@ -52,9 +62,57 @@ export default function PersonalDataScreen() {
     [setShowDatePicker, setBirthdate]
   );
 
+  function onBackPress() {
+    navigation.canGoBack() ? navigation.goBack() : null
+  }
 
   function onNextPress() {
-    navigation.navigate('OnlineStoreData');
+    
+    hasOnlineStore == 0 ? navigation.navigate('OnlineStoreData') : navigation.navigate('BankingData')
+  }
+
+  function onSelectedProvince(provinceIndex: number) {
+    setProvince(provinceIndex);
+    setKabupatenList([])
+    setKabupaten(-1);
+    setKecamatanList([]);
+    setKecamatan(-1);
+    setKelurahanList([])
+    setKelurahan(-1);
+    setKodePosList([])
+    setKodePos(-1);
+    PersonalDataService.getKabupaten(provinceList[provinceIndex].id).then((kabupaten:any) => {
+      setKabupatenList(kabupaten)
+    })
+  }
+
+  function onSelectedKabupaten(kabupatenIndex: number) {
+    setKabupaten(kabupatenIndex);
+    setKecamatan(-1);
+    setKecamatanList([]);
+    setKelurahan(-1);
+    setKelurahanList([])
+    setKodePos(-1);
+    setKodePosList([])
+    PersonalDataService.getKecamatan(kabupatenList[kabupatenIndex].id).then((kecamatan:any) => {
+      setKecamatanList(kecamatan)
+    })
+  }
+
+  function onSelectedKecamatan(kecamatanIndex: number) {
+    setKecamatan(kecamatanIndex);
+    setKelurahan(-1);
+    setKelurahanList([])
+    setKodePos(-1);
+    setKodePosList([])
+    PersonalDataService.getKelurahan(kecamatanList[kecamatanIndex].id).then((kelurahan:any) => {
+      setKelurahanList(kelurahan)
+    })
+  }
+
+  function onSelectedKelurahan(kelurahanIndex: number) {
+    setKelurahan(kelurahanIndex)
+    setKodePosList(['10101', '01010']);
   }
 
   function selectGender(index: number) {
@@ -378,9 +436,26 @@ export default function PersonalDataScreen() {
           </View>
           <View style={styles.formField}>
             <Controller
+              name='address'
+              control={control}
+              rules={{ required: true }}
+              defaultValue=''
+              render={({ field: { onChange, value } }) => (
+                <PaperComponent.Input
+                  item={{...textOnlyForm, label: 'Alamat', errorMessage: 'Alamat harus diisi'}}
+                  value={value}
+                  error={errors.address}
+                  editable={true}
+                  onChangeText={(value: string) => onChange(value)}
+                />
+              )}
+            />
+          </View>
+          <View style={styles.formField}>
+            <Controller
               name='rt'
               control={control}
-              rules={{ required: true, pattern: numberOnlyForm.regexPattern }}
+              rules={{ required: true, minLength:2, maxLength:3, pattern: numberOnlyForm.regexPattern }}
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <PaperComponent.Input
@@ -397,7 +472,7 @@ export default function PersonalDataScreen() {
             <Controller
               name='rw'
               control={control}
-              rules={{ required: true, pattern: numberOnlyForm.regexPattern }}
+              rules={{ required: true, minLength:2, maxLength:3, pattern: numberOnlyForm.regexPattern }}
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <PaperComponent.Input
@@ -419,7 +494,7 @@ export default function PersonalDataScreen() {
                     alias: 'Provinsi',
                     data: provinceList,
                     selected: province,
-                    onPressHandler: (value:number)=>{setProvince(value)}
+                    onPressHandler: (value:number)=>{onSelectedProvince(value)}
                   }),
                 1000,
                 {
@@ -443,7 +518,7 @@ export default function PersonalDataScreen() {
                       alias: 'Provinsi',
                       data: provinceList,
                       selected: province,
-                      onPressHandler: (value:number)=>{setProvince(value)}
+                      onPressHandler: (value:number)=>{onSelectedProvince(value)}
                     }),
                   1000,
                   {
@@ -459,7 +534,292 @@ export default function PersonalDataScreen() {
                         alias: 'Provinsi',
                         data: provinceList,
                         selected: province,
-                        onPressHandler: (value:number)=>{setProvince(value)}
+                        onPressHandler: (value:number)=>{onSelectedProvince(value)}
+                      })
+                    }
+                  />
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.formField]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={Lodash.debounce(
+                () =>
+                  navigation.navigate('OptionForm', {
+                    alias: 'Kota',
+                    data: kabupatenList,
+                    selected: kabupaten,
+                    onPressHandler: (value:number)=>{onSelectedKabupaten(value)}
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false,
+                },
+              )}>
+              <PaperComponent.Input
+                dense
+                label={'Kota'}
+                value={kabupatenList.length > 0 ? kabupatenList[kabupaten]?.nama : ''}
+                placeholder={'Kota'}
+                onChangeText={() => { }}
+                onEndEditing={() => { }}
+                editable={false}
+                returnKeyType={'done'}
+                underlineColorAndroid={'transparent'}
+                onPressIn={Lodash.debounce(
+                  () =>
+                    navigation.navigate('OptionForm', {
+                      alias: 'Kota',
+                      data: kabupatenList,
+                      selected: kabupaten,
+                      onPressHandler: (value:number)=>{onSelectedKabupaten(value)}
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}
+                right={
+                  <TextInput.Icon
+                    name={'chevron-down'}
+                    onPress={() =>
+                      navigation.navigate('OptionForm', {
+                        alias: 'Kota',
+                        data: kabupatenList,
+                        selected: kabupaten,
+                        onPressHandler: (value:number)=>{onSelectedKabupaten(value)}
+                      })
+                    }
+                  />
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.formField]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={Lodash.debounce(
+                () =>
+                  navigation.navigate('OptionForm', {
+                    alias: 'Kecamatan',
+                    data: kecamatanList,
+                    selected: kecamatan,
+                    onPressHandler: (value:number)=>{onSelectedKecamatan(value)}
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false,
+                },
+              )}>
+              <PaperComponent.Input
+                dense
+                label={'Kecamatan'}
+                value={kecamatanList.length > 0 ? kecamatanList[kecamatan]?.nama : ''}
+                placeholder={'Kecamatan'}
+                onChangeText={() => { }}
+                onEndEditing={() => { }}
+                editable={false}
+                returnKeyType={'done'}
+                underlineColorAndroid={'transparent'}
+                onPressIn={Lodash.debounce(
+                  () =>
+                    navigation.navigate('OptionForm', {
+                      alias: 'Kecamatan',
+                      data: kecamatanList,
+                      selected: kecamatan,
+                      onPressHandler: (value:number)=>{onSelectedKecamatan(value)}
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}
+                right={
+                  <TextInput.Icon
+                    name={'chevron-down'}
+                    onPress={() =>
+                      navigation.navigate('OptionForm', {
+                        alias: 'Kecamatan',
+                        data: kecamatanList,
+                        selected: kecamatan,
+                        onPressHandler: (value:number)=>{onSelectedKecamatan(value)}
+                      })
+                    }
+                  />
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.formField]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={Lodash.debounce(
+                () =>
+                  navigation.navigate('OptionForm', {
+                    alias: 'Kelurahan',
+                    data: kelurahanList,
+                    selected: kelurahan,
+                    onPressHandler: (value:number)=>{onSelectedKelurahan(value)}
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false,
+                },
+              )}>
+              <PaperComponent.Input
+                dense
+                label={'Kelurahan'}
+                value={kelurahanList.length > 0 ? kelurahanList[kelurahan]?.nama : ''}
+                placeholder={'Kelurahan'}
+                onChangeText={() => { }}
+                onEndEditing={() => { }}
+                editable={false}
+                returnKeyType={'done'}
+                underlineColorAndroid={'transparent'}
+                onPressIn={Lodash.debounce(
+                  () =>
+                    navigation.navigate('OptionForm', {
+                      alias: 'Kelurahan',
+                      data: kelurahanList,
+                      selected: kelurahan,
+                      onPressHandler: (value:number)=>{onSelectedKelurahan(value)}
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}
+                right={
+                  <TextInput.Icon
+                    name={'chevron-down'}
+                    onPress={() =>
+                      navigation.navigate('OptionForm', {
+                        alias: 'Kelurahan',
+                        data: kelurahanList,
+                        selected: kelurahan,
+                        onPressHandler: (value:number)=>{onSelectedKelurahan(value)}
+                      })
+                    }
+                  />
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.formField]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={Lodash.debounce(
+                () =>
+                  navigation.navigate('OptionForm', {
+                    alias: 'Kode Pos',
+                    data: kodePosList,
+                    selected: kodePos,
+                    onPressHandler: (value:number)=>{setKodePos(value)}
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false,
+                },
+              )}>
+              <PaperComponent.Input
+                dense
+                label={'Kode Pos'}
+                value={kodePosList.length > 0 ? kodePosList[kodePos] : ''}
+                placeholder={'Kode Pos'}
+                onChangeText={() => { }}
+                onEndEditing={() => { }}
+                editable={false}
+                returnKeyType={'done'}
+                underlineColorAndroid={'transparent'}
+                onPressIn={Lodash.debounce(
+                  () =>
+                    navigation.navigate('OptionForm', {
+                      alias: 'Kode Pos',
+                      data: kodePosList,
+                      selected: kodePos,
+                      onPressHandler: (value:number)=>{setKodePos(value)}
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}
+                right={
+                  <TextInput.Icon
+                    name={'chevron-down'}
+                    onPress={() =>
+                      navigation.navigate('OptionForm', {
+                        alias: 'Kode Pos',
+                        data: kodePosList,
+                        selected: kodePos,
+                        onPressHandler: (value:number)=>{setKodePos(value)}
+                      })
+                    }
+                  />
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.formField]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={Lodash.debounce(
+                () =>
+                  navigation.navigate('OptionForm', {
+                    alias: 'Toko Online',
+                    data: onlineStoreList,
+                    selected: hasOnlineStore,
+                    onPressHandler: (value:number)=>{setOnlineStore(value)}
+                  }),
+                1000,
+                {
+                  leading: true,
+                  trailing: false,
+                },
+              )}>
+              <PaperComponent.Input
+                dense
+                label={'Memiliki Toko Online'}
+                value={onlineStoreList[hasOnlineStore]}
+                placeholder={'Memiliki Toko Online'}
+                onChangeText={() => { }}
+                onEndEditing={() => { }}
+                editable={false}
+                returnKeyType={'done'}
+                underlineColorAndroid={'transparent'}
+                onPressIn={Lodash.debounce(
+                  () =>
+                    navigation.navigate('OptionForm', {
+                      alias: 'Toko Online',
+                      data: onlineStoreList,
+                      selected: hasOnlineStore,
+                      onPressHandler: (value:number)=>{setOnlineStore(value)}
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}
+                right={
+                  <TextInput.Icon
+                    name={'chevron-down'}
+                    onPress={() =>
+                      navigation.navigate('OptionForm', {
+                        alias: 'Toko Online',
+                        data: onlineStoreList,
+                        selected: hasOnlineStore,
+                        onPressHandler: (value:number)=>{setOnlineStore(value)}
                       })
                     }
                   />
@@ -470,10 +830,18 @@ export default function PersonalDataScreen() {
         </View>
       </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+        disabled={!navigation.canGoBack()}>
+        Kembali
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
         leading: true,
         trailing: false,
-      })} buttonStyle={styles.btnNext}>
+      })} buttonStyle={styles.btnNext}
+      disabled={province < 0 || kabupaten < 0 || kecamatan < 0 || kelurahan < 0 || kodePos < 0}>
         Lanjutkan
       </PaperComponent.Button>
     </View>
@@ -518,8 +886,14 @@ const styles = StyleSheet.create({
   rowField: {
     flexDirection: 'row',
   },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
-  }
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
+  },
 });

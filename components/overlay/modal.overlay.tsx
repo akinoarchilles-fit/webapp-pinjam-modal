@@ -36,14 +36,16 @@ function OptionForm ({
         isVisible={showModal}
         onBackButtonPress={() => setShowModal(false)}
         onBackdropPress={() => setShowModal(false)}
-        backdropOpacity={0.7}
+        backdropOpacity={0}
         statusBarTranslucent
         deviceWidth={Constants.screenWidth}
-        deviceHeight={Constants.screenHeight}
+        // deviceHeight={Constants.screenHeight}
         hideModalContentWhileAnimating={true}
         backdropTransitionOutTiming={0}
         useNativeDriver={true}
         useNativeDriverForBackdrop={true}
+        hasBackdrop={false}
+        backdropColor={'transparent'}
         onModalWillHide={() => navigation.goBack()}
         style={styles.modal}>
         <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
@@ -61,7 +63,7 @@ function OptionForm ({
               },
             ]}>
             <PaperComponent.Appbar
-              hideLeftComponent
+              type='modal'
               title={alias}
               appbarStyle={{
                 backgroundColor:
@@ -71,13 +73,6 @@ function OptionForm ({
                 elevation: 0,
                 borderBottomWidth: 0,
               }}
-              rightComponent={[
-                <IconButton
-                  key={'close'}
-                  icon={'close'}
-                  onPress={() => setShowModal(false)}
-                />,
-              ]}
             />
             <FlatList
               data={data}
@@ -141,6 +136,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 0,
     width: Constants.screenWidth > 600 ? 480 : Constants.screenWidth,
+    height: Constants.screenHeight
   },
   container: {
     borderTopLeftRadius: 15,
@@ -151,7 +147,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     paddingBottom: 30,
     paddingTop: 10,
-    maxHeight: Constants.screenHeight / 2,
+    height: Constants.screenHeight
   },
   item: {
     paddingVertical: 0,

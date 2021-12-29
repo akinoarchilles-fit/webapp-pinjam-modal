@@ -1,15 +1,18 @@
 
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import Lodash, { every } from 'lodash';
+import Lodash from 'lodash';
 import * as React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native';
 import { Checkbox, useTheme } from 'react-native-paper';
+import RenderHtml from 'react-native-render-html';
 import PaperComponent from '../components/paper';
+import { CONTENT } from '../resources/forms/TermsCondition.string';
 
 export default function TermsConditionScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
+  const { width } = useWindowDimensions();
 
   const [tncBox, setCheck] = React.useState<boolean[]>([
     false,
@@ -32,7 +35,12 @@ export default function TermsConditionScreen() {
           <PaperComponent.Headline style={styles.title}>Syarat dan Ketentuan</PaperComponent.Headline>
           <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
           <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-          <View style={styles.formContainer}>
+          <View style={[styles.formContainer]}>
+            <RenderHtml
+              contentWidth={width}
+              source={{html: CONTENT}}
+              defaultTextProps={{ style: { color: useColorScheme() === 'dark' ? 'white' : 'black'}}}
+            />
             <Checkbox.Item status={tncBox[0] ? 'checked' : 'unchecked'} onPress={() => onPressCheckbox(0)} position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan mengisi formulir ini, saya menyatakan semua data yang saya berikan adalah benar dan akurat." />
             <Checkbox.Item status={tncBox[1] ? 'checked' : 'unchecked'} onPress={() => onPressCheckbox(1)} position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan ini saya telah mengetahui, membaca, serta menyetujui syarat dan ketentuan dan Kebijakan Privasi dari PINJAMMODAL."/>
           </View>
@@ -74,9 +82,15 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%'
   },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
   }
 });
 

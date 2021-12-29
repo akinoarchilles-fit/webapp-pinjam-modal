@@ -42,18 +42,18 @@ function RootNavigator() {
       <View style={styles.viewport}>
         <Stack.Navigator>
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
-          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ title: 'Syarat dan Ketentuan' }} />
-          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Daftar' }} />
-          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ title: 'Tentukan Nilai & Tenor Pinjaman' }} />
-          <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ title: 'Unggah Dokumen' }} />
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ title: 'isi Data Diri' }} />
-          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ title: 'Isi Data Toko Online' }} />
-          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ title: 'Isi Data Rekening Pribadi' }} />
-          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ title: 'Isi Data Keterangan Tambahan' }} />
-          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ title: 'Verifikasi OTP' }} />
+          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{headerShown: false}} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
+          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{headerShown: false}} />
+          <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{headerShown: false}} />
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Success" component={SuccessApplyScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-          <Stack.Group>
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{headerShown: false}}/>
+          <Stack.Group screenOptions={{presentation: 'transparentModal'}}>
             <Stack.Screen name="OptionForm" component={OptionForm} options={{headerShown: false}}/>
             <Stack.Screen name="DateForm" component={DateForm} options={{headerShown: false}}/>
           </Stack.Group>

@@ -23,7 +23,7 @@ export default function BankingDataScreen() {
   } = useForm();
 
   function onNextPress() {
-    navigation.navigate('Success');
+    navigation.navigate('AdditionalData');
   }
 
   return (

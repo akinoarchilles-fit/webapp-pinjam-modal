@@ -1,9 +1,10 @@
+import { Feather } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
 import { FontWeightConfig } from '../resources/FontConfig';
@@ -13,9 +14,13 @@ import Utility from '../resources/Utility';
 export default function LoanCalculationScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
+  const tenorList = ['3 Bulan', '6 Bulan', '9 Bulan'];
   const [loanAmount,setLoanAmount] = React.useState(1000000);
-  const [tenor, setTenor] = React.useState(3);
-  const [tenorStep, setTenorStep] = React.useState(3);
+  const [selectedTenor, setTenor] = React.useState(0);
+
+  function onBackPress() {
+    navigation.canGoBack() ? navigation.goBack() : null
+  }
 
   function onNextPress() {
     navigation.navigate('DocumentUpload');
@@ -23,10 +28,6 @@ export default function LoanCalculationScreen() {
 
   function onLoanAmountChanged(amount: number) {
     setLoanAmount(amount);
-  }
-
-  function onTenorChanged(tenor: number) {
-    setTenor(tenor);
   }
   
   return (
@@ -55,22 +56,33 @@ export default function LoanCalculationScreen() {
                 onValueChange={(value) => onLoanAmountChanged(value)}
               />
             </View>
-            <View style={styles.formField}>
-              <View style={[styles.rowField]}>
-                <PaperComponent.Title>Tenor Pinjaman</PaperComponent.Title>
-                <PaperComponent.Title>{tenor} bulan</PaperComponent.Title>
-              </View>
-              <Slider
-                style={{height: 40}}
-                value={tenor}
-                minimumValue={3}
-                maximumValue={12}
-                step={3}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
-                thumbTintColor={theme.colors.primary}
-                onValueChange={(value) => onTenorChanged(value)}
-              />
+            <View style={[styles.formField, styles.rowField]}>
+              <PaperComponent.Title>Tenor Pinjaman</PaperComponent.Title>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={Lodash.debounce(
+                  () =>
+                    navigation.navigate('OptionForm', {
+                      alias: 'Lama Pinjaman',
+                      data: tenorList,
+                      selected: selectedTenor,
+                      onPressHandler: (value:number)=>{setTenor(value)}
+                    }),
+                  1000,
+                  {
+                    leading: true,
+                    trailing: false,
+                  },
+                )}>
+                <View
+                  style={[
+                    styles.chipBtn,
+                    {backgroundColor: theme.colors.primary},
+                  ]}>
+                  <PaperComponent.Text style={styles.chipTitle}>{tenorList[selectedTenor]}</PaperComponent.Text>
+                  <Feather name={'chevron-down'} size={18} color={'white'} />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
@@ -97,6 +109,13 @@ export default function LoanCalculationScreen() {
           </View>
         </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+        disabled={!navigation.canGoBack()}>
+        Kembali
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
@@ -142,8 +161,29 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 0.4,
   },
+  chipTitle: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    marginRight: 5,
+  },
+  chipBtn: {
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    paddingVertical: Platform.OS === 'ios' ? 5 : 2,
+    borderRadius: 50,
+    height: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
-    marginTop: 30
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
   },
   formContainer: {
     margin: 10,

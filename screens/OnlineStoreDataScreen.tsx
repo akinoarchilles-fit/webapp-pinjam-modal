@@ -22,6 +22,10 @@ export default function OnlineStoreDataScreen() {
     getValues,
   } = useForm();
 
+  function onBackPress() {
+    navigation.canGoBack() ? navigation.goBack() : null
+  }
+
   function onNextPress() {
     navigation.navigate('BankingData');
   }
@@ -224,6 +228,13 @@ export default function OnlineStoreDataScreen() {
           </View>
         </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+        disabled={!navigation.canGoBack()}>
+        Kembali
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
         leading: true,
         trailing: false,
@@ -269,8 +280,14 @@ const styles = StyleSheet.create({
   formField: {
     marginVertical: 5,
   },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
-  }
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
+  },
 });
