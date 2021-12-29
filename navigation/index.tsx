@@ -41,6 +41,7 @@ function RootNavigator() {
     <View style={{backgroundColor: theme.colors.background}}>
       <View style={styles.viewport}>
         <Stack.Navigator>
+          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{headerShown: false}} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
@@ -48,7 +49,6 @@ function RootNavigator() {
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{headerShown: false}} />
           <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{headerShown: false}}/>
           <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{headerShown: false}}/>
           <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{headerShown: false}}/>
           <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{headerShown: false}}/>
           <Stack.Screen name="Success" component={SuccessApplyScreen} options={{headerShown: false}}/>

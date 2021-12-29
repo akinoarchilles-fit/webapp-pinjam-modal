@@ -34,25 +34,38 @@ const PersonalDataForm = {
   },
   religionList: [
     'Buddha',
-    'Kristen',
+    'Protestan',
     'Katolik',
     'Hindu',
     'Islam',
-    'Konghucu'
+    'Konghucu',
+    'Lain-lain'
   ],
   educationLevelList: [
+    'Sekolah Dasar',
     'Sekolah Menengah Pertama',
     'Sekolah Menegah Atas',
-    'Diploma',
-    'S1',
+    'Diploma/S1',
     'S2',
     'S3'
   ],
   maritalStatusList: [
-    'Lajang',
-    'Menikah',
-    'Cerai'
+    'Kawin',
+    'Tidak Kawin',
+    'Cerai Meninggal',
+    'Cerai Hidup'
   ],
+  referenceRelationList: [
+    'Kakak/Adik Perempuan',
+    'Ibu',
+    'Kakak/Adik Laki-laki',
+    'Ayah',
+    'Keponakan',
+    'Ibu Mertua',
+    'Ayah Mertua',
+    'Suami/Istri',
+    'Teman'
+  ]
 };
 
 

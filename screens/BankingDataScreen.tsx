@@ -7,13 +7,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
-import BankingForm from '../resources/forms/BankingForms';
+import BankingForm from '../resources/forms/Banking.validation';
 
 
 export default function BankingDataScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
-  const { bankingNameForm, bankingNumberForm } = BankingForm;
+  const { bankingNameForm, bankingNumberForm, bankList } = BankingForm;
+  const [selectedBank, setSelectedBank] = React.useState(0);
 
   const {
     handleSubmit,
@@ -21,6 +22,10 @@ export default function BankingDataScreen() {
     formState: { errors },
     getValues,
   } = useForm();
+
+  function onBackPress() {
+    navigation.canGoBack() ? navigation.goBack() : null
+  }
 
   function onNextPress() {
     navigation.navigate('AdditionalData');
@@ -39,13 +44,13 @@ export default function BankingDataScreen() {
               <Controller
                 name='bankingNumber'
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, pattern: bankingNumberForm.regexPattern }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
                     item={bankingNumberForm}
                     value={value}
-                    error={errors.instagram}
+                    error={errors.bankingNumber}
                     editable={true}
                     onChangeText={(value: string) => onChange(value)}
                   />
@@ -54,7 +59,7 @@ export default function BankingDataScreen() {
             </View>
             <View style={styles.formField}>
               <Controller
-                name='facebook'
+                name='bankingName'
                 control={control}
                 rules={{ required: true, pattern: bankingNameForm.regexPattern }}
                 defaultValue=''
@@ -62,7 +67,7 @@ export default function BankingDataScreen() {
                   <PaperComponent.Input
                     item={bankingNameForm}
                     value={value}
-                    error={errors.facebook}
+                    error={errors.bankingName}
                     editable={true}
                     onChangeText={(value: string) => onChange(value)}
                   />
@@ -74,7 +79,12 @@ export default function BankingDataScreen() {
                 activeOpacity={0.8}
                 onPress={Lodash.debounce(
                   () =>
-                    navigation.navigate('OptionForm'),
+                    navigation.navigate('OptionForm', {
+                      alias: 'Nama Bank',
+                      data: bankList,
+                      selected: selectedBank,
+                      onPressHandler: (value:number)=>{setSelectedBank(value)}
+                    }),
                   1000,
                   {
                     leading: true,
@@ -84,7 +94,7 @@ export default function BankingDataScreen() {
                 <PaperComponent.Input
                   dense
                   label={'Nama Bank'}
-                  value={'Bank Central Asia'}
+                  value={bankList[selectedBank]}
                   placeholder={'Nama Bank'}
                   onChangeText={() => { }}
                   onEndEditing={() => { }}
@@ -93,7 +103,12 @@ export default function BankingDataScreen() {
                   underlineColorAndroid={'transparent'}
                   onPressIn={Lodash.debounce(
                     () =>
-                      navigation.navigate('OptionForm'),
+                      navigation.navigate('OptionForm', {
+                        alias: 'Nama Bank',
+                        data: bankList,
+                        selected: selectedBank,
+                        onPressHandler: (value:number)=>{setSelectedBank(value)}
+                      }),
                     1000,
                     {
                       leading: true,
@@ -104,7 +119,12 @@ export default function BankingDataScreen() {
                     <TextInput.Icon
                       name={'chevron-down'}
                       onPress={() =>
-                        navigation.navigate('OptionForm')
+                        navigation.navigate('OptionForm', {
+                          alias: 'Nama Bank',
+                          data: bankList,
+                          selected: selectedBank,
+                          onPressHandler: (value:number)=>{setSelectedBank(value)}
+                        })
                       }
                     />
                   }
@@ -114,6 +134,13 @@ export default function BankingDataScreen() {
           </View>
         </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+        disabled={!navigation.canGoBack()}>
+        Kembali
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
         leading: true,
         trailing: false,
@@ -159,8 +186,14 @@ const styles = StyleSheet.create({
   formField: {
     marginVertical: 5,
   },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
-  }
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
+  },
 });

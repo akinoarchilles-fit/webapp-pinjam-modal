@@ -5,8 +5,8 @@ const BankingForm = {
     label: 'Nama Rekening',
     placeHolder: 'Masukan nama rekening',
     error: false,
-    errorMessage: '*Nama harus diisi',
-    regexPattern: /.*/,
+    errorMessage: '*Nama rekening tidak valid atau belum diisi',
+    regexPattern: /^[A-Za-z.,]+$/,
     keyboardType: 'default',
     inputType: 'text',
   },
@@ -16,10 +16,17 @@ const BankingForm = {
     label: 'Nomor Rekening',
     placeHolder: 'Masukan nomor rekening',
     error: false,
-    errorMessage: 'Pastikan nomor rekening benar',
+    errorMessage: '*Nomor rekening tidak valid atau belum diisi',
+    regexPattern: /^[0-9]+$/,
     keyboardType: 'phone-pad',
     inputType: 'phone-pad',
   },
+  bankList: [
+    'Bank Central Asia',
+    'Bank Mandiri',
+    'Bank Negara Indonesia',
+    'Bank Rakyat Indonesia'
+  ]
 };
 
 export default BankingForm;

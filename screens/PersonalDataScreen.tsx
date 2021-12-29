@@ -15,7 +15,7 @@ import PersonalDataService from '../services/PersonalDataService';
 export default function PersonalDataScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
-  const { idCardNoForm, textOnlyForm, numberOnlyForm, religionList, educationLevelList, maritalStatusList } = PersonalDataForm;
+  const { idCardNoForm, textOnlyForm, numberOnlyForm, religionList, educationLevelList, maritalStatusList, referenceRelationList } = PersonalDataForm;
 
   const [genders, setGenders] = React.useState([
     { label: 'Laki - Laki', value: 'L', checked: true },
@@ -38,6 +38,7 @@ export default function PersonalDataScreen() {
   const [kodePosList, setKodePosList] = React.useState<Array<any>>([]);
   const [hasOnlineStore, setOnlineStore] = React.useState<number>(0);
   const onlineStoreList = ['Ya', 'Tidak'];
+  const [referenceRelation, setReferenceRelation] = React.useState(0);
 
   React.useEffect(() => {
     PersonalDataService.getProvince().then((provinces:any) => setProvinceList(provinces));
@@ -442,7 +443,7 @@ export default function PersonalDataScreen() {
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <PaperComponent.Input
-                  item={{...textOnlyForm, label: 'Alamat', errorMessage: 'Alamat harus diisi'}}
+                  item={{...textOnlyForm, label: 'Alamat', errorMessage: 'Alamat tidak valid atau belum diisi'}}
                   value={value}
                   error={errors.address}
                   editable={true}
@@ -459,7 +460,7 @@ export default function PersonalDataScreen() {
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <PaperComponent.Input
-                  item={{...numberOnlyForm, label: 'RT', placeHolder: 'RT', errorMessage: '*RT tidak valid'}}
+                  item={{...numberOnlyForm, label: 'RT', placeHolder: 'RT', errorMessage: '*RT tidak valid atau belum diisi'}}
                   value={value}
                   error={errors.rt}
                   editable={true}
@@ -476,7 +477,7 @@ export default function PersonalDataScreen() {
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <PaperComponent.Input
-                  item={{...numberOnlyForm, label: 'RW', placeHolder: 'RW', errorMessage: '*RW tidak valid'}}
+                  item={{...numberOnlyForm, label: 'RW', placeHolder: 'RW', errorMessage: '*RW tidak valid atau belum diisi'}}
                   value={value}
                   error={errors.rw}
                   editable={true}
@@ -827,6 +828,103 @@ export default function PersonalDataScreen() {
               />
             </TouchableOpacity>
           </View>
+          {
+            hasOnlineStore !== 0 ? (
+              <View>
+                <View style={styles.formField}>
+                  <Controller
+                    name='referenceName'
+                    control={control}
+                    rules={{ required: true, pattern: textOnlyForm.regexPattern }}
+                    defaultValue=''
+                    render={({ field: { onChange, value } }) => (
+                      <PaperComponent.Input
+                        item={{...textOnlyForm, label: 'Nama Referensi', placeHolder: 'Nama Referensi', errorMessage: '*Nama Referensi tidak valid atau belum diisi'}}
+                        value={value}
+                        error={errors.referenceName}
+                        editable={true}
+                        onChangeText={(value: string) => onChange(value)}
+                      />
+                    )}
+                  />
+                </View>
+                <View style={[styles.formField]}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={Lodash.debounce(
+                      () =>
+                        navigation.navigate('OptionForm', {
+                          alias: 'Hubungan referensi',
+                          data: referenceRelationList,
+                          selected: referenceRelation,
+                          onPressHandler: (value:number)=>{setReferenceRelation(value)}
+                        }),
+                      1000,
+                      {
+                        leading: true,
+                        trailing: false,
+                      },
+                    )}>
+                    <PaperComponent.Input
+                      dense
+                      label={'Hubungan dengan Referensi'}
+                      value={referenceRelationList[referenceRelation]}
+                      placeholder={'Hubungan dengan Referensi'}
+                      onChangeText={() => { }}
+                      onEndEditing={() => { }}
+                      editable={false}
+                      returnKeyType={'done'}
+                      underlineColorAndroid={'transparent'}
+                      onPressIn={Lodash.debounce(
+                        () =>
+                          navigation.navigate('OptionForm', {
+                            alias: 'Hubungan referensi',
+                            data: referenceRelationList,
+                            selected: referenceRelation,
+                            onPressHandler: (value:number)=>{setReferenceRelation(value)}
+                          }),
+                        1000,
+                        {
+                          leading: true,
+                          trailing: false,
+                        },
+                      )}
+                      right={
+                        <TextInput.Icon
+                          name={'chevron-down'}
+                          onPress={() =>
+                            navigation.navigate('OptionForm', {
+                              alias: 'Hubungan referensi',
+                              data: referenceRelationList,
+                              selected: referenceRelation,
+                              onPressHandler: (value:number)=>{setReferenceRelation(value)}
+                            })
+                          }
+                        />
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.formField}>
+                  <Controller
+                    name='referencePhone'
+                    control={control}
+                    rules={{ required: true, pattern: numberOnlyForm.regexPattern }}
+                    defaultValue=''
+                    render={({ field: { onChange, value } }) => (
+                      <PaperComponent.Input
+                        item={{...textOnlyForm, label: 'No. HP Referensi', placeHolder: 'No. HP Referensi', errorMessage: '*No. HP Referensi tidak valid atau belum diisi'}}
+                        value={value}
+                        error={errors.referencePhone}
+                        editable={true}
+                        onChangeText={(value: string) => onChange(value)}
+                      />
+                    )}
+                  />
+                </View>
+              </View>
+            ) : null
+          }
         </View>
       </View>
       </ScrollView>
