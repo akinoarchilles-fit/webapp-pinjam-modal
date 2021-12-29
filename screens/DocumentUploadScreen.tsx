@@ -66,19 +66,19 @@ export default function DocumentUploadScreen() {
           </View>
         </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+        leading: true,
+        trailing: false,
+      })} buttonStyle={styles.btnNext}
+        disabled={!(documents.every(e => e.data))}>
+        Lanjutkan
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
           leading: true,
           trailing: false,
         })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
         disabled={!navigation.canGoBack()}>
         Kembali
-      </PaperComponent.Button>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
-          leading: true,
-          trailing: false,
-        })} buttonStyle={styles.btnNext}
-        disabled={!(documents.every(e => e.data))}>
-        Lanjutkan
       </PaperComponent.Button>
     </View>
   );
@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20
+    padding: 20,
+    paddingHorizontal: 10
   },
   title: {
     fontSize: 20,
@@ -129,11 +130,12 @@ const styles = StyleSheet.create({
   btnBack: {
     paddingVertical: 3,
     backgroundColor: 'white',
-    marginBottom: 10,
-  },
-  btnNext: {
+    borderWidth: 1,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+  },
+  btnNext: {
+    marginBottom: 10,
     paddingVertical: 3
   },
 });

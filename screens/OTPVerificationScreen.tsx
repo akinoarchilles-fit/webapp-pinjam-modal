@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20
+    padding: 20,
+    paddingHorizontal: 10
   },
   title: {
     fontSize: 20,
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
   },
   btnNext: {
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
+    borderBottomRightRadius: 0,
+    paddingVertical: 3
   }
 });

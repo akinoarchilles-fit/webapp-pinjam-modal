@@ -21,7 +21,7 @@ export default function LandingScreen() {
       <PaperComponent.Headline style={styles.title}>Pinjaman Partner</PaperComponent.Headline>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-      <View style={[styles.separator, { backgroundColor: 'white'}]}/>
+      <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
       <PaperComponent.Button onPress={onStartPress}>Mulai ajukan</PaperComponent.Button>
     </View>
   );
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 30,
-    height: 1,
+    height: 2,
     width: '80%',
   },
   logo: {

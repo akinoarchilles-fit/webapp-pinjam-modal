@@ -50,8 +50,8 @@ export default function LoanCalculationScreen() {
                 step={100000}
                 minimumValue={1000000}
                 maximumValue={10000000}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
+                minimumTrackTintColor={theme.colors.primary}
+                maximumTrackTintColor={theme.colors.accent}
                 thumbTintColor={theme.colors.primary}
                 onValueChange={(value) => onLoanAmountChanged(value)}
               />
@@ -85,7 +85,7 @@ export default function LoanCalculationScreen() {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
+          <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
           <View style={styles.formContainer}>
             <View style={[styles.formField, styles.rowField]}>
               <PaperComponent.Title>Bunga</PaperComponent.Title>
@@ -100,7 +100,7 @@ export default function LoanCalculationScreen() {
               <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
             </View>
           </View>
-          <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
+          <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
           <View style={styles.formContainer}>
             <View style={[styles.formField, styles.rowField]}>
               <PaperComponent.Title>Cicilan per Bulan</PaperComponent.Title>
@@ -109,18 +109,18 @@ export default function LoanCalculationScreen() {
           </View>
         </View>
       </ScrollView>
+      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+          leading: true,
+          trailing: false,
+        })} buttonStyle={styles.btnNext}>
+        Lanjutkan
+      </PaperComponent.Button>
       <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
           leading: true,
           trailing: false,
         })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
         disabled={!navigation.canGoBack()}>
         Kembali
-      </PaperComponent.Button>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
-          leading: true,
-          trailing: false,
-        })} buttonStyle={styles.btnNext}>
-        Lanjutkan
       </PaperComponent.Button>
     </View>
   );
@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20
+    padding: 20,
+    paddingHorizontal: 10
   },
   title: {
     fontSize: 20,
@@ -178,11 +179,12 @@ const styles = StyleSheet.create({
   btnBack: {
     paddingVertical: 3,
     backgroundColor: 'white',
-    marginBottom: 10,
-  },
-  btnNext: {
+    borderWidth: 1,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+  },
+  btnNext: {
+    marginBottom: 10,
     paddingVertical: 3
   },
   formContainer: {
