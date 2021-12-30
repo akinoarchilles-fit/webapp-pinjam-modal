@@ -3,10 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
-import { Alert, Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { Alert, Image, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Avatar, IconButton, useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
 import * as DocumentPicker from 'expo-document-picker';
+import Fonts from '../resources/Fonts';
+import { FontWeightConfig } from '../resources/FontConfig';
 
 interface Document{
   label: string;
@@ -49,14 +51,51 @@ export default function DocumentUploadScreen() {
             {
               documents.map((e, i) => (
                 <View key={i} style={styles.formField}>
-                  <View style={{flex: 5}}>
-                    <PaperComponent.Title>{e.label}</PaperComponent.Title>
-                  </View>
-                  <View style={{flex: 5}}>
-                    {
-                      e.data ? <Image source={{uri: e.data}} style={styles.docImage}/> : 
-                      <PaperComponent.Button onPress={() => uploadDocument(i)}>Unggah</PaperComponent.Button>
-                    }
+                  <View style={[styles.tileContainer, {borderColor: theme.colors.border}]}>
+                    <View style={{flex: 1.7}}>
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => {uploadDocument(i)}
+                        }>
+                        <View style={{paddingBottom: 10}}>
+                          <View>
+                            <Avatar.Image
+                              size={48}
+                              source={{
+                                uri: e.data,
+                              }}
+                              style={{backgroundColor: theme.colors.accent}}
+                            />
+                            {!Lodash.isEmpty(e.data) && e.data && (
+                              <Avatar.Icon
+                                icon={'check'}
+                                size={30}
+                                style={styles.accessory}
+                              />
+                            )}
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{flex: 7}}>
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={Lodash.debounce(() => {uploadDocument(i)}, 1000, {
+                          leading: true,
+                          trailing: false,
+                        })}>
+                        <PaperComponent.Title style={styles.titleStyle}>
+                          {e.label}
+                        </PaperComponent.Title>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{flex: 1.5}}>
+                      <IconButton
+                        icon={'chevron-right'}
+                        size={24}
+                        onPress={() => {uploadDocument(i)}}
+                      />
+                    </View>
                   </View>
                 </View>
               ))
@@ -96,6 +135,17 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: 10
   },
+  tileContainer: {
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingVertical: 15,
+    paddingLeft: 15,
+    paddingBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
+  },
   normalText: {
     fontSize: 14,
     letterSpacing: 0.4,
@@ -117,6 +167,25 @@ const styles = StyleSheet.create({
     height: 150,
     width: '100%',
     resizeMode: 'contain'
+  },
+  titleStyle: {
+    fontFamily: Fonts.semiBold,
+    fontWeight: FontWeightConfig.semiBold,
+    letterSpacing: 0.4,
+    fontSize: 14,
+    minHeight: 0,
+    lineHeight: null,
+    paddingLeft: 10,
+  },
+  accessory: {
+    backgroundColor: '#2A8FF6',
+    elevation: 3,
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 3},
+    shadowRadius: 3,
+    right: 7,
+    bottom: -10,
+    position: 'absolute',
   },
   footer: {
     paddingVertical: 10
