@@ -139,8 +139,6 @@ const styles = StyleSheet.create({
     height: Constants.screenHeight
   },
   container: {
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
     elevation: 3,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 3},

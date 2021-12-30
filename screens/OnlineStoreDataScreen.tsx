@@ -14,6 +14,8 @@ export default function OnlineStoreDataScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
   const { fullNameForm, phoneNumberForm } = OnlineStoreForm;
+  const durationList = ['3 Bulan', '6 Bulan', '9 Bulan'];
+  const [selectedDuration, setDuration] = React.useState(0);
 
   const {
     handleSubmit,
@@ -34,8 +36,6 @@ export default function OnlineStoreDataScreen() {
     <View style={styles.main}>
       <ScrollView style={styles.main} contentContainerStyle={styles.scrollContainer}>
         <View style={[styles.container, { borderColor: theme.colors.surface }]}>
-          <PaperComponent.Headline style={styles.title}>Isi Data Toko Online</PaperComponent.Headline>
-          <View style={[styles.separator, { backgroundColor: theme.colors.surface }]} />
           <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
           <View style={styles.formContainer}>
@@ -146,7 +146,12 @@ export default function OnlineStoreDataScreen() {
                 activeOpacity={0.8}
                 onPress={Lodash.debounce(
                   () =>
-                    navigation.navigate('OptionForm'),
+                    navigation.navigate('OptionForm', {
+                      alias: 'Lama Usaha',
+                      data: durationList,
+                      selected: selectedDuration,
+                      onPressHandler: (value:number)=>{setDuration(value)}
+                    }),
                   1000,
                   {
                     leading: true,
@@ -165,7 +170,12 @@ export default function OnlineStoreDataScreen() {
                   underlineColorAndroid={'transparent'}
                   onPressIn={Lodash.debounce(
                     () =>
-                      navigation.navigate('OptionForm'),
+                      navigation.navigate('OptionForm', {
+                        alias: 'Lama Usaha',
+                        data: durationList,
+                        selected: selectedDuration,
+                        onPressHandler: (value:number)=>{setDuration(value)}
+                      }),
                     1000,
                     {
                       leading: true,
@@ -176,7 +186,12 @@ export default function OnlineStoreDataScreen() {
                     <TextInput.Icon
                       name={'chevron-down'}
                       onPress={() =>
-                        navigation.navigate('OptionForm')
+                        navigation.navigate('OptionForm', {
+                          alias: 'Lama Usaha',
+                          data: durationList,
+                          selected: selectedDuration,
+                          onPressHandler: (value:number)=>{setDuration(value)}
+                        })
                       }
                     />
                   }
@@ -188,7 +203,12 @@ export default function OnlineStoreDataScreen() {
                 activeOpacity={0.8}
                 onPress={Lodash.debounce(
                   () =>
-                    navigation.navigate('OptionForm'),
+                    navigation.navigate('OptionForm', {
+                      alias: 'Lama Usaha',
+                      data: durationList,
+                      selected: selectedDuration,
+                      onPressHandler: (value:number)=>{setDuration(value)}
+                    }),
                   1000,
                   {
                     leading: true,
@@ -198,7 +218,7 @@ export default function OnlineStoreDataScreen() {
                 <PaperComponent.Input
                   dense
                   label={'Lama Usaha'}
-                  value={'3 bulan'}
+                  value={durationList[selectedDuration]}
                   placeholder={'Pilih lama usaha'}
                   onChangeText={() => { }}
                   onEndEditing={() => { }}
@@ -207,7 +227,12 @@ export default function OnlineStoreDataScreen() {
                   underlineColorAndroid={'transparent'}
                   onPressIn={Lodash.debounce(
                     () =>
-                      navigation.navigate('OptionForm'),
+                      navigation.navigate('OptionForm', {
+                        alias: 'Lama Usaha',
+                        data: durationList,
+                        selected: selectedDuration,
+                        onPressHandler: (value:number)=>{setDuration(value)}
+                      }),
                     1000,
                     {
                       leading: true,
@@ -218,7 +243,12 @@ export default function OnlineStoreDataScreen() {
                     <TextInput.Icon
                       name={'chevron-down'}
                       onPress={() =>
-                        navigation.navigate('OptionForm')
+                        navigation.navigate('OptionForm', {
+                          alias: 'Lama Usaha',
+                          data: durationList,
+                          selected: selectedDuration,
+                          onPressHandler: (value:number)=>{setDuration(value)}
+                        })
                       }
                     />
                   }
@@ -228,19 +258,21 @@ export default function OnlineStoreDataScreen() {
           </View>
         </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
-        leading: true,
-        trailing: false,
-      })} buttonStyle={styles.btnNext}>
-        Lanjutkan
-      </PaperComponent.Button>
-      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+      <View style={styles.footer}>
+        <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
-        disabled={!navigation.canGoBack()}>
-        Kembali
-      </PaperComponent.Button>
+        })} buttonStyle={styles.btnNext}>
+          Lanjutkan
+        </PaperComponent.Button>
+        <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+            leading: true,
+            trailing: false,
+          })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+          disabled={!navigation.canGoBack()}>
+          Kembali
+        </PaperComponent.Button>
+      </View>
     </View>
   );
 }
@@ -255,17 +287,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20,
-    paddingHorizontal: 10
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 30
-  },
-  separator: {
-    height: 2,
-    width: '100%'
+    padding: 10
   },
   normalText: {
     fontSize: 14,
@@ -275,21 +297,22 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
   },
   formContainer: {
-    padding: 20,
+    padding: 10,
+    paddingHorizontal: 15,
     width: '100%'
   },
   formField: {
-    marginVertical: 5,
+    marginVertical: 5
+  },
+  footer: {
+    paddingVertical: 10
   },
   btnBack: {
     paddingVertical: 3,
     backgroundColor: 'white',
-    borderWidth: 1,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
   },
   btnNext: {
+    paddingVertical: 3,
     marginBottom: 10,
-    paddingVertical: 3
-  },
+  }
 });

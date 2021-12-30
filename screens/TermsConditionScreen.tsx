@@ -32,8 +32,6 @@ export default function TermsConditionScreen() {
     <View style={styles.main}>
       <ScrollView style={styles.main} contentContainerStyle={styles.scrollContainer}>
         <View style={[styles.container, { borderColor: theme.colors.surface}]}>
-          <PaperComponent.Headline style={styles.title}>Syarat dan Ketentuan</PaperComponent.Headline>
-          <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
           <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
           <View style={[styles.formContainer]}>
             <RenderHtml
@@ -46,13 +44,15 @@ export default function TermsConditionScreen() {
           </View>
         </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
-          leading: true,
-          trailing: false,
-        })} buttonStyle={styles.btnNext}
-        disabled={!(tncBox.every(e => e === true))}>
-        Lanjutkan
-      </PaperComponent.Button>
+      <View style={styles.footer}>
+        <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+            leading: true,
+            trailing: false,
+          })} buttonStyle={styles.btnNext}
+          disabled={!(tncBox.every(e => e === true))}>
+          Lanjutkan
+        </PaperComponent.Button>
+      </View>
     </View>
   );
 }
@@ -67,20 +67,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 20
-  },
-  separator: {
-    height: 2,
-    width: '100%'
+    padding: 10
   },
   formContainer: {
-    padding: 20,
+    padding: 10,
+    paddingHorizontal: 15,
     width: '100%'
+  },
+  footer: {
+    paddingVertical: 10
   },
   btnBack: {
     paddingVertical: 3,
@@ -88,8 +83,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   btnNext: {
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
     paddingVertical: 3
   }
 });

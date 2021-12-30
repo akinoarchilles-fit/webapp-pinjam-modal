@@ -126,11 +126,13 @@ export default function PersonalDataScreen() {
     <View style={styles.main}>
       <ScrollView style={styles.main} contentContainerStyle={styles.scrollContainer}>
       <View style={[styles.container, { borderColor: theme.colors.surface }]}>
-        <PaperComponent.Headline style={styles.title}>Isi Data Diri</PaperComponent.Headline>
-        <View style={[styles.separator, { backgroundColor: theme.colors.surface }]} />
         <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
         <View style={styles.formContainer}>
+          <View style={[styles.sectionHeader, { marginTop: 0}]}>
+            <PaperComponent.Title>Data Pribadi</PaperComponent.Title>
+            <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
+          </View>
           <View style={[styles.formField, { paddingHorizontal: 15 }]}>
             <PaperComponent.Subheading>Jenis Kelamin</PaperComponent.Subheading>
             {
@@ -418,6 +420,10 @@ export default function PersonalDataScreen() {
                 />
               )}
             />
+          </View>
+          <View style={styles.sectionHeader}>
+            <PaperComponent.Title>Data Domisili</PaperComponent.Title>
+            <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
           </View>
           <View style={styles.formField}>
             <Controller
@@ -832,6 +838,10 @@ export default function PersonalDataScreen() {
           {
             hasOnlineStore !== 0 ? (
               <View>
+                <View style={styles.sectionHeader}>
+                  <PaperComponent.Title>Data Referensi</PaperComponent.Title>
+                  <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
+                </View>
                 <View style={styles.formField}>
                   <Controller
                     name='referenceName'
@@ -929,20 +939,22 @@ export default function PersonalDataScreen() {
         </View>
       </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
-        leading: true,
-        trailing: false,
-      })} buttonStyle={styles.btnNext}
-      disabled={province < 0 || kabupaten < 0 || kecamatan < 0 || kelurahan < 0 || kodePos < 0}>
-        Lanjutkan
-      </PaperComponent.Button>
-      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+      <View style={styles.footer}>
+        <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
-        disabled={!navigation.canGoBack()}>
-        Kembali
-      </PaperComponent.Button>
+        })} buttonStyle={styles.btnNext}
+        disabled={province < 0 || kabupaten < 0 || kecamatan < 0 || kelurahan < 0 || kodePos < 0}>
+          Lanjutkan
+        </PaperComponent.Button>
+        <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+            leading: true,
+            trailing: false,
+          })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+          disabled={!navigation.canGoBack()}>
+          Kembali
+        </PaperComponent.Button>
+      </View>
     </View>
   );
 }
@@ -957,13 +969,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20,
-    paddingHorizontal: 10
+    padding: 10
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 30
+  sectionHeader: {
+    marginTop: 15,
   },
   separator: {
     height: 2,
@@ -978,6 +987,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     padding: 10,
+    paddingHorizontal: 15,
     width: '100%'
   },
   formField: {
@@ -986,15 +996,15 @@ const styles = StyleSheet.create({
   rowField: {
     flexDirection: 'row',
   },
+  footer: {
+    paddingVertical: 10
+  },
   btnBack: {
     paddingVertical: 3,
     backgroundColor: 'white',
-    borderWidth: 1,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
   },
   btnNext: {
+    paddingVertical: 3,
     marginBottom: 10,
-    paddingVertical: 3
-  },
+  }
 });

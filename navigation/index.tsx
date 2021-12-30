@@ -5,7 +5,10 @@ import { Dimensions, Platform, StyleSheet, useColorScheme, View } from 'react-na
 import { Provider as PaperProvider, useTheme } from 'react-native-paper';
 import DateForm from '../components/overlay/date.overlay';
 import OptionForm from '../components/overlay/modal.overlay';
+import PaperComponent from '../components/paper';
 import Constants from '../resources/Constants';
+import { FontWeightConfig } from '../resources/FontConfig';
+import Fonts from '../resources/Fonts';
 import AdditionalDataScreen from '../screens/AdditionalDataScreen';
 import BankingDataScreen from '../screens/BankingDataScreen';
 import DocumentUploadScreen from '../screens/DocumentUploadScreen';
@@ -34,23 +37,35 @@ export default function Navigation() {
   );
 }
 const Stack = createNativeStackNavigator<RootStackParamList>();
+enum ScreenStack {
+  TermsCondition = 'Syarat dan Ketentuan',
+  Register = 'Isi Data Registrasi',
+  LoanCalculation = 'Tentukan Nilai & Tenor Pinjaman',
+  DocumentUpload = 'Unggah Dokumen',
+  PersonalData = 'Isi Data Diri',
+  OnlineStoreData = 'Isi Data Toko Online',
+  BankingData = 'Isi Data Rekening Pribadi',
+  AdditionalData = 'Isi Data Keterangan Tambahan',
+  OTPVerification = 'Verifikasi OTP'
+}
 
 function RootNavigator() {
   const theme = useTheme();
+  const screenOptions: NativeStackNavigationOptions = {headerTitleAlign: 'center', headerTitleStyle: styles.title, headerBackVisible: false}
   return (
     <View style={{backgroundColor: theme.colors.background}}>
       <View style={styles.viewport}>
         <Stack.Navigator>
           <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
-          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{headerShown: false}} />
-          <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
-          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{headerShown: false}} />
-          <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{headerShown: false}} />
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition}/>)}}/>
+          <Stack.Screen name="Register" component={RegisterScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register}/>)}}/>
+          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation}/>)}}/>
+          <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.DocumentUpload}/>)}}/>
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.PersonalData}/>)}}/>
+          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OnlineStoreData}/>)}}/>
+          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.BankingData}/>)}}/>
+          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.AdditionalData}/>)}}/>
+          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OTPVerification}/>)}}/>
           <Stack.Screen name="Success" component={SuccessApplyScreen} options={{headerShown: false}}/>
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{headerShown: false}}/>
           <Stack.Group screenOptions={{presentation: 'transparentModal'}}>
@@ -69,5 +84,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: Dimensions.get('screen').width > 480 ? 480 : Dimensions.get('screen').width,
     height: Platform.OS === 'web' ? '100vh' : '100%'
-  }
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: Fonts.semiBold,
+  },
 })

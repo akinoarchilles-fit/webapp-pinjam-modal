@@ -34,8 +34,6 @@ export default function LoanCalculationScreen() {
     <View style={styles.main}>
       <ScrollView style={styles.main} contentContainerStyle={styles.scrollContainer}>
         <View style={[styles.container, { borderColor: theme.colors.surface}]}>
-          <PaperComponent.Headline style={styles.title}>Tentukan Nilai & Tenor Pinjaman</PaperComponent.Headline>
-          <View style={[styles.separator, { backgroundColor: theme.colors.surface }]}/>
           <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
           <View style={styles.formContainer}>
@@ -109,19 +107,21 @@ export default function LoanCalculationScreen() {
           </View>
         </View>
       </ScrollView>
-      <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
-          leading: true,
-          trailing: false,
-        })} buttonStyle={styles.btnNext}>
-        Lanjutkan
-      </PaperComponent.Button>
-      <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
-          leading: true,
-          trailing: false,
-        })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
-        disabled={!navigation.canGoBack()}>
-        Kembali
-      </PaperComponent.Button>
+      <View style={styles.footer}>
+        <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
+            leading: true,
+            trailing: false,
+          })} buttonStyle={styles.btnNext}>
+          Lanjutkan
+        </PaperComponent.Button>
+        <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
+            leading: true,
+            trailing: false,
+          })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
+          disabled={!navigation.canGoBack()}>
+          Kembali
+        </PaperComponent.Button>
+      </View>
     </View>
   );
 }
@@ -136,13 +136,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   scrollContainer: {
-    padding: 20,
-    paddingHorizontal: 10
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 30
+    padding: 10
   },
   separator: {
     height: 2,
@@ -176,20 +170,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnBack: {
-    paddingVertical: 3,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-  btnNext: {
-    marginBottom: 10,
-    paddingVertical: 3
-  },
   formContainer: {
-    margin: 10,
-    width: '90%',
+    padding: 10,
+    paddingHorizontal: 15,
+    width: '100%'
   },
   formField: {
     marginVertical: 5
@@ -197,5 +181,16 @@ const styles = StyleSheet.create({
   rowField: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  footer: {
+    paddingVertical: 10
+  },
+  btnBack: {
+    paddingVertical: 3,
+    backgroundColor: 'white',
+  },
+  btnNext: {
+    paddingVertical: 3,
+    marginBottom: 10,
   }
 });

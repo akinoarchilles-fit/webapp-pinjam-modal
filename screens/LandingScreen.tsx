@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   logo: {
-    width: 400,
+    width: Constants.screenWidth/1.5,
     height: 100,
     resizeMode: 'contain',
     marginBottom: 40

@@ -6,7 +6,7 @@ const RegisterForms = {
     placeHolder: 'Seller ID',
     error: false,
     errorMessage: '*Pastikan Seller ID benar',
-    regexPattern: /^\d{7}$/,
+    regexPattern: /^[0-9]+$/,
     keyboardType: 'phone-pad',
     inputType: 'text',
   },
