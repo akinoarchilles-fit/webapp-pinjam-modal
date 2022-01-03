@@ -309,6 +309,7 @@ const styles = StyleSheet.create({
   },
   btnBack: {
     paddingVertical: 3,
+    borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {

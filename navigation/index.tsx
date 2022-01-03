@@ -86,7 +86,7 @@ function RootNavigator() {
           <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
             <Stack.Screen name="OptionForm" component={OptionForm} options={{ headerShown: false }} />
             <Stack.Screen name="DateForm" component={DateForm} options={{ headerShown: false }} />
-            <Stack.Screen name="UploadGuideOverlay" component={UploadGuideModal} options={{ header: () => (<PaperComponent.Appbar type='modal' title={ScreenStack.UploadGuide} />), animation: 'slide_from_bottom' }} />
+            <Stack.Screen name="UploadGuideOverlay" component={UploadGuideModal} options={{ headerShown: false }} />
             <Stack.Screen name="ImagePreviewOverlay" component={ImagePreviewOverlay} options={{ header: () => (<PaperComponent.Appbar type='modal' appbarStyle={{ borderBottomWidth: 0 }} />) }} />
           </Stack.Group>
         </Stack.Navigator>
