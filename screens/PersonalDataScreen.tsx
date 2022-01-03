@@ -9,6 +9,7 @@ import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-
 import { RadioButton, TextInput, useTheme } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import PaperComponent from '../components/paper';
+import Colors from '../constants/Colors';
 import PersonalDataForm from '../resources/forms/PersonalData.validation';
 import PersonalDataService from '../services/PersonalDataService';
 
@@ -130,10 +131,10 @@ export default function PersonalDataScreen() {
 
         <View style={styles.formContainer}>
           <View style={[styles.sectionHeader, { marginTop: 0}]}>
-            <PaperComponent.Title>Data Pribadi</PaperComponent.Title>
+            <PaperComponent.Title style={{color: theme.colors.primary }}>Data Pribadi</PaperComponent.Title>
             <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
           </View>
-          <View style={[styles.formField, { paddingHorizontal: 15 }]}>
+          <View style={[styles.formField, { paddingHorizontal: 5 }]}>
             <PaperComponent.Subheading>Jenis Kelamin</PaperComponent.Subheading>
             {
               genders.map((e, i) => {
@@ -422,7 +423,7 @@ export default function PersonalDataScreen() {
             />
           </View>
           <View style={styles.sectionHeader}>
-            <PaperComponent.Title>Data Domisili</PaperComponent.Title>
+            <PaperComponent.Title  style={{color: theme.colors.primary }}>Data Domisili</PaperComponent.Title>
             <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
           </View>
           <View style={styles.formField}>
@@ -839,7 +840,7 @@ export default function PersonalDataScreen() {
             hasOnlineStore !== 0 ? (
               <View>
                 <View style={styles.sectionHeader}>
-                  <PaperComponent.Title>Data Referensi</PaperComponent.Title>
+                  <PaperComponent.Title  style={{color: theme.colors.primary }}>Data Referensi</PaperComponent.Title>
                   <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
                 </View>
                 <View style={styles.formField}>
@@ -976,7 +977,8 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 2,
-    width: '100%'
+    width: '100%',
+    marginTop: 3
   },
   normalText: {
     fontSize: 14,

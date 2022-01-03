@@ -25,7 +25,7 @@ export default function SuccessApplyScreen() {
       <StatusBar backgroundColor={'#2ECC71'} />
       <View style={{alignItems: 'center', backgroundColor: '#2ECC71'}}>
         <Image
-          source={{uri: 'https://www.pngfind.com/pngs/m/169-1695521_kisspng-computer-icons-check-mark-presentation-symbol-ok.png'}}
+          source={require('../assets/images/ic_success.webp')}
           style={styles.img}
         />
         <PaperComponent.Headline style={styles.title}>

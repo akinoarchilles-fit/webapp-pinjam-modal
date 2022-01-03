@@ -20,16 +20,16 @@ function Appbar ({
   showHelp,
   onHelpPress,
 }: {
-  type: string,
-  appbarStyle: Object | undefined,
-  title: string | undefined,
-  titleContainerStyle: Object | undefined,
-  titleStyle: TextStyle | undefined,
-  onClick: Function | undefined,
-  hideLeftComponent: boolean | undefined,
-  rightComponent: Array<Object>,
-  showHelp: boolean | undefined,
-  onHelpPress: Function | undefined,
+  type?: string,
+  appbarStyle?: Object | undefined,
+  title?: string | undefined,
+  titleContainerStyle?: Object | undefined,
+  titleStyle?: TextStyle | undefined,
+  onClick?: Function | undefined,
+  hideLeftComponent?: boolean | undefined,
+  rightComponent?: Array<Object>,
+  showHelp?: boolean | undefined,
+  onHelpPress?: Function | undefined,
 }) {
   const navigation = useNavigation();
   const theme = useTheme();

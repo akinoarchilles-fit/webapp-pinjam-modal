@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
   },
   inputView: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
   },
   input: {
     fontSize: 14,
