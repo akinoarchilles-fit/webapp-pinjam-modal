@@ -9,19 +9,22 @@ import PaperComponent from '../components/paper';
 import * as DocumentPicker from 'expo-document-picker';
 import Fonts from '../resources/Fonts';
 import { FontWeightConfig } from '../resources/FontConfig';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types';
 
 interface Document{
   label: string;
+  type: string,
   data: string | undefined;
 }
 
-export default function DocumentUploadScreen() {
+export default function DocumentUploadScreen({route}:NativeStackScreenProps<RootStackParamList, 'DocumentUpload'>) {
   const navigation = useNavigation();
   const theme = useTheme();
   
   const [documents, setDocuments] = React.useState<Document[]>([
-    {label: 'Foto KTP', data: undefined},
-    {label: 'Foto Selfie dengan KTP', data: undefined},
+    {label: 'Foto KTP', type: 'id', data: undefined},
+    {label: 'Foto Selfie dengan KTP', type:'selfie', data: undefined},
   ]);
 
   function onBackPress() {
@@ -32,7 +35,7 @@ export default function DocumentUploadScreen() {
     navigation.navigate('PersonalData');
   }
 
-  async function uploadDocument(index: number) {
+  async function openPicker(index: number) {
     const result = await DocumentPicker.getDocumentAsync();
     if(result.type == 'success') {
       documents[index].data = result.uri
@@ -40,9 +43,9 @@ export default function DocumentUploadScreen() {
     }
   }
 
-  React.useEffect(() => {
-    navigation.navigate('UploadGuideOverlay');
-  }, []);
+  function uploadDocument(index: number) {
+    navigation.navigate('UploadGuideOverlay', { type: documents[index].type, onBackHandler: () => openPicker(index)})
+  }
   
   return (
     <View style={styles.main}>

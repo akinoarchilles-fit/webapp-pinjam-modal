@@ -16,12 +16,15 @@ import Modal from 'react-native-modal';
 import Constants from '../../resources/Constants';
 import { StatusBar } from 'expo-status-bar';
 import { IconButton, useTheme } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
-function UploadGuideModal ({}) {
+function UploadGuideModal ({route}:NativeStackScreenProps<RootStackParamList, 'UploadGuideOverlay'>) {
   const navigation = useNavigation();
   const theme = useTheme();
   const scheme = useColorScheme();
-  const { correct_image, incorrect_image, note } = UploadGuideString;
+  const { type, onBackHandler } = route.params
+  const { correct_image, incorrect_image, note } = UploadGuideString[type];
 
   const listDetail = [
     {
@@ -46,6 +49,11 @@ function UploadGuideModal ({}) {
   React.useEffect(() => {
     setShowModal(true);
   }, []);
+  
+  function goBack() {
+    navigation.goBack()
+    onBackHandler()
+  }
 
   return (
     <Modal
@@ -62,7 +70,7 @@ function UploadGuideModal ({}) {
         useNativeDriverForBackdrop={true}
         hasBackdrop={false}
         backdropColor={'transparent'}
-        onModalWillHide={() => navigation.goBack()}
+        onModalWillHide={() => goBack()}
         style={styles.modal}>
         <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
         <View
@@ -73,7 +81,7 @@ function UploadGuideModal ({}) {
               },
             ]}>
             
-          <PaperComponent.Appbar type='modal' title={'Perhatian'}/>
+          <PaperComponent.Appbar type='modal' title={'Perhatian'} onClick={() => goBack()}/>
           <FlatList
         data={listDetail}
         keyExtractor={(item, index) => index.toString()}

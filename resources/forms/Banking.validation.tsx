@@ -6,7 +6,7 @@ const BankingForm = {
     placeHolder: 'Masukan nama rekening',
     error: false,
     errorMessage: '*Nama rekening tidak valid atau belum diisi',
-    regexPattern: /^[A-Za-z.,]+$/,
+    regexPattern: /^[A-Za-z., ]+$/,
     keyboardType: 'default',
     inputType: 'text',
   },
