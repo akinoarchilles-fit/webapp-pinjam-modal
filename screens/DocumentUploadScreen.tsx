@@ -22,7 +22,6 @@ export default function DocumentUploadScreen() {
   const [documents, setDocuments] = React.useState<Document[]>([
     {label: 'Foto KTP', data: undefined},
     {label: 'Foto Selfie dengan KTP', data: undefined},
-    // {label: 'Bukti Transaksi Usaha', data: undefined}
   ]);
 
   function onBackPress() {
@@ -40,6 +39,10 @@ export default function DocumentUploadScreen() {
       setDocuments([...documents]);
     }
   }
+
+  React.useEffect(() => {
+    navigation.navigate('UploadGuideOverlay');
+  }, []);
   
   return (
     <View style={styles.main}>

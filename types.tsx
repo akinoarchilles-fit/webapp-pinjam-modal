@@ -25,6 +25,8 @@ export type RootStackParamList = {
   Success: undefined;
   OptionForm: {alias: string, selected:number, data:Array<any>, onPressHandler: Function} | undefined;
   DateForm: {alias: string, selected:number, data:Array<any>, onPressHandler: Function};
+  UploadGuideOverlay: undefined;
+  ImagePreviewOverlay: {imageUrl: string};
   NotFound: undefined;
 };
 

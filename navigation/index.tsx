@@ -1,10 +1,12 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Dimensions, Platform, StyleSheet, useColorScheme, View } from 'react-native';
-import { Provider as PaperProvider, useTheme } from 'react-native-paper';
+import { IconButton, Provider as PaperProvider, useTheme } from 'react-native-paper';
 import DateForm from '../components/overlay/date.overlay';
+import ImagePreviewOverlay from '../components/overlay/imagepreview.overlay';
 import OptionForm from '../components/overlay/modal.overlay';
+import UploadGuideModal from '../components/overlay/uploadguide.overlay';
 import PaperComponent from '../components/paper';
 import Constants from '../resources/Constants';
 import { FontWeightConfig } from '../resources/FontConfig';
@@ -46,37 +48,52 @@ enum ScreenStack {
   OnlineStoreData = 'Isi Data Toko Online',
   BankingData = 'Isi Data Rekening Pribadi',
   AdditionalData = 'Isi Data Keterangan Tambahan',
-  OTPVerification = 'Verifikasi OTP'
+  OTPVerification = 'Verifikasi OTP',
+  UploadGuide = 'Perhatian',
 }
 
 function RootNavigator() {
   const theme = useTheme();
-  const screenOptions: NativeStackNavigationOptions = {headerTitleAlign: 'center', headerTitleStyle: styles.title, headerBackVisible: false}
+  const navigation = useNavigation();
+  const screenOptions: NativeStackNavigationOptions = { headerTitleAlign: 'center', headerTitleStyle: styles.title, headerBackVisible: false }
   return (
-    <View style={{backgroundColor: theme.colors.background}}>
+    <View style={{ backgroundColor: theme.colors.background }}>
       <View style={styles.viewport}>
         <Stack.Navigator>
-          <Stack.Screen name="Landing" component={LandingScreen}  options={{headerShown: false}}/>
-          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition}/>)}}/>
-          <Stack.Screen name="Register" component={RegisterScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register}/>)}}/>
-          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation}/>)}}/>
-          <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.DocumentUpload}/>)}}/>
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.PersonalData}/>)}}/>
-          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OnlineStoreData}/>)}}/>
-          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.BankingData}/>)}}/>
-          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.AdditionalData}/>)}}/>
-          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OTPVerification}/>)}}/>
-          <Stack.Screen name="Success" component={SuccessApplyScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{headerShown: false}}/>
-          <Stack.Group screenOptions={{presentation: 'transparentModal'}}>
-            <Stack.Screen name="OptionForm" component={OptionForm} options={{headerShown: false}}/>
-            <Stack.Screen name="DateForm" component={DateForm} options={{headerShown: false}}/>
+          <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition} />) }} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register} />) }} />
+          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
+          <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{
+            header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.DocumentUpload} rightComponent={[
+              <IconButton
+                key={'uploadguide_button'}
+                icon={'information-outline'}
+                size={24}
+                onPress={() =>
+                  navigation.navigate('UploadGuideOverlay')
+                }
+              />,
+            ]} />)
+          }} />
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.PersonalData} />) }} />
+          <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OnlineStoreData} />) }} />
+          <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.BankingData} />) }} />
+          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.AdditionalData} />) }} />
+          <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OTPVerification} />) }} />
+          <Stack.Screen name="Success" component={SuccessApplyScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ headerShown: false }} />
+          <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
+            <Stack.Screen name="OptionForm" component={OptionForm} options={{ headerShown: false }} />
+            <Stack.Screen name="DateForm" component={DateForm} options={{ headerShown: false }} />
+            <Stack.Screen name="UploadGuideOverlay" component={UploadGuideModal} options={{ header: () => (<PaperComponent.Appbar type='modal' title={ScreenStack.UploadGuide} />), animation: 'slide_from_bottom' }} />
+            <Stack.Screen name="ImagePreviewOverlay" component={ImagePreviewOverlay} options={{ header: () => (<PaperComponent.Appbar type='modal' appbarStyle={{ borderBottomWidth: 0 }} />) }} />
           </Stack.Group>
         </Stack.Navigator>
       </View>
     </View>
   );
-  }
+}
 
 const styles = StyleSheet.create({
   viewport: {
