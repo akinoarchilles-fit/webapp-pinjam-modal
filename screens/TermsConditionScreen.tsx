@@ -39,8 +39,8 @@ export default function TermsConditionScreen() {
               source={{html: CONTENT}}
               defaultTextProps={{ style: { color: useColorScheme() === 'dark' ? 'white' : 'black'}}}
             />
-            <Checkbox.Item status={tncBox[0] ? 'checked' : 'unchecked'} onPress={() => onPressCheckbox(0)} position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan mengisi formulir ini, saya menyatakan semua data yang saya berikan adalah benar dan akurat." />
-            <Checkbox.Item status={tncBox[1] ? 'checked' : 'unchecked'} onPress={() => onPressCheckbox(1)} position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan ini saya telah mengetahui, membaca, serta menyetujui syarat dan ketentuan dan Kebijakan Privasi dari PINJAMMODAL."/>
+            <Checkbox.Item status={tncBox[0] ? 'checked' : 'unchecked'} color={theme.colors.primary} onPress={() => onPressCheckbox(0)} position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan mengisi formulir ini, saya menyatakan semua data yang saya berikan adalah benar dan akurat." />
+            <Checkbox.Item status={tncBox[1] ? 'checked' : 'unchecked'} color={theme.colors.primary} onPress={() => onPressCheckbox(1)} position='leading' labelStyle={{textAlign: 'left', marginLeft: 10}}  label="Dengan ini saya telah mengetahui, membaca, serta menyetujui syarat dan ketentuan dan Kebijakan Privasi dari PINJAMMODAL."/>
           </View>
         </View>
       </ScrollView>
