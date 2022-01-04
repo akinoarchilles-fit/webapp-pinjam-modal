@@ -27,6 +27,7 @@ export type RootStackParamList = {
   DateForm: {alias: string, selected:number, data:Array<any>, onPressHandler: Function};
   UploadGuideOverlay: {type: string, onBackHandler: Function};
   ImagePreviewOverlay: {imageUrl: string};
+  DeviceInfoOverlay: undefined;
   NotFound: undefined;
 };
 

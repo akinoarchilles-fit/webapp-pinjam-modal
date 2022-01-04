@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Dimensions, Platform, StyleSheet, useColorScheme, View } from 'react-native';
 import { IconButton, Provider as PaperProvider, useTheme } from 'react-native-paper';
 import DateForm from '../components/overlay/date.overlay';
+import DeviceInfoOverlay from '../components/overlay/deviceinfo.overlay';
 import ImagePreviewOverlay from '../components/overlay/imagepreview.overlay';
 import OptionForm from '../components/overlay/modal.overlay';
 import UploadGuideModal from '../components/overlay/uploadguide.overlay';
@@ -77,6 +78,7 @@ function RootNavigator() {
             <Stack.Screen name="DateForm" component={DateForm} options={{ headerShown: false }} />
             <Stack.Screen name="UploadGuideOverlay" component={UploadGuideModal} options={{ headerShown: false }} />
             <Stack.Screen name="ImagePreviewOverlay" component={ImagePreviewOverlay} options={{ header: () => (<PaperComponent.Appbar type='modal' appbarStyle={{ borderBottomWidth: 0 }} />) }} />
+            <Stack.Screen name="DeviceInfoOverlay" component={DeviceInfoOverlay} options={{ header: () => (<PaperComponent.Appbar type='modal' appbarStyle={{ borderBottomWidth: 0 }} />) }} />
           </Stack.Group>
         </Stack.Navigator>
       </View>

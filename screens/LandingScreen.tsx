@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { IconButton, useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
 import Constants from '../resources/Constants';
 
@@ -23,6 +23,7 @@ export default function LandingScreen() {
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
       <PaperComponent.Button onPress={onStartPress}>Mulai ajukan</PaperComponent.Button>
+      <IconButton icon={'cellphone-settings-variant'} color={theme.colors.primary} onPress={() => navigation.navigate('DeviceInfoOverlay')}/>
     </View>
   );
 }
