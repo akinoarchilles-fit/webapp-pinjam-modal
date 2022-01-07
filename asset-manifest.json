@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.js": "/webapp-pinjam-modal/static/js/app.84aae6d4.chunk.js",
-    "app.js.map": "/webapp-pinjam-modal/static/js/app.84aae6d4.chunk.js.map",
+    "app.js": "/webapp-pinjam-modal/static/js/app.5eb9dcf7.chunk.js",
+    "app.js.map": "/webapp-pinjam-modal/static/js/app.5eb9dcf7.chunk.js.map",
     "runtime~app.js": "/webapp-pinjam-modal/static/js/runtime~app.27ced9ed.js",
     "runtime~app.js.map": "/webapp-pinjam-modal/static/js/runtime~app.27ced9ed.js.map",
-    "static/js/2.e15ea476.chunk.js": "/webapp-pinjam-modal/static/js/2.e15ea476.chunk.js",
-    "static/js/2.e15ea476.chunk.js.map": "/webapp-pinjam-modal/static/js/2.e15ea476.chunk.js.map",
+    "static/js/2.c1b226b9.chunk.js": "/webapp-pinjam-modal/static/js/2.c1b226b9.chunk.js",
+    "static/js/2.c1b226b9.chunk.js.map": "/webapp-pinjam-modal/static/js/2.c1b226b9.chunk.js.map",
     "fonts/AntDesign.ttf": "/webapp-pinjam-modal/./fonts/AntDesign.ttf",
     "fonts/Entypo.ttf": "/webapp-pinjam-modal/./fonts/Entypo.ttf",
     "fonts/Feather.ttf": "/webapp-pinjam-modal/./fonts/Feather.ttf",
@@ -24,13 +24,13 @@
     "index.html": "/webapp-pinjam-modal/index.html",
     "manifest.json": "/webapp-pinjam-modal/manifest.json",
     "serve.json": "/webapp-pinjam-modal/serve.json",
-    "static/js/2.e15ea476.chunk.js.LICENSE.txt": "/webapp-pinjam-modal/static/js/2.e15ea476.chunk.js.LICENSE.txt",
+    "static/js/2.c1b226b9.chunk.js.LICENSE.txt": "/webapp-pinjam-modal/static/js/2.c1b226b9.chunk.js.LICENSE.txt",
     "static/media/ic_success.webp": "/webapp-pinjam-modal/static/media/ic_success.286be91c.webp",
     "static/media/pm-full-logo.webp": "/webapp-pinjam-modal/static/media/pm-full-logo.2aeb7458.webp"
   },
   "entrypoints": [
     "static/js/runtime~app.27ced9ed.js",
-    "static/js/2.e15ea476.chunk.js",
-    "static/js/app.84aae6d4.chunk.js"
+    "static/js/2.c1b226b9.chunk.js",
+    "static/js/app.5eb9dcf7.chunk.js"
   ]
 }
