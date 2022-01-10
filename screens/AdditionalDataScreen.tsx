@@ -5,22 +5,36 @@ import Lodash from 'lodash';
 import * as React from 'react';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PaperComponent from '../components/paper';
 import AdditionalDataForm from '../resources/forms/AdditionalData.validation';
+import { nextHandler, setFormData } from '../store/actions/AdditionalData.action';
+import { selectFormData, selectFormStep, selectLoadingForm } from '../store/selectors/form.selector';
 
 
-export default function AdditionalDataScreen() {
+function AdditionalDataScreen({
+  formData,
+  currentStep,
+  setFormData,
+  nextHandler
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
   const { loanPurposeList, repaymentList } = AdditionalDataForm;
-  const [selectedLoanPurpose, setLoanPurpose] = React.useState(0);
-  const [selectedRepayment, setRepayment] = React.useState(0);
+  const [selectedLoanPurpose, setLoanPurpose] = React.useState(-1);
+  const [selectedRepayment, setRepayment] = React.useState(-1);
 
   function onBackPress() {
+    setFormData({currentStep: currentStep-1})
     navigation.canGoBack() ? navigation.goBack() : null
   }
 
   function onNextPress() {
+    nextHandler({
+      loan_purpose: loanPurposeList[selectedLoanPurpose],
+      payment_options: repaymentList[selectedRepayment]
+    }, formData, currentStep)
     navigation.navigate('OTPVerification');
   }
 
@@ -152,7 +166,8 @@ export default function AdditionalDataScreen() {
         <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={styles.btnNext}>
+        })} buttonStyle={styles.btnNext}
+        disabled={selectedLoanPurpose < 0 || selectedRepayment < 0}>
           Lanjutkan
         </PaperComponent.Button>
         <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
@@ -166,6 +181,18 @@ export default function AdditionalDataScreen() {
     </View>
   );
 }
+
+const mapStateToProps = createStructuredSelector({
+  formData: selectFormData,
+  currentStep: selectFormStep,
+});
+
+const mapDispatchToProps = (dispatch:any) => ({ 
+  setFormData: (payload:any) => dispatch(setFormData(payload)),
+  nextHandler: (payload:any, formData:any, currentStep:number) => dispatch(nextHandler(payload, formData, currentStep))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdditionalDataScreen);
 
 const styles = StyleSheet.create({
   main: {
@@ -198,12 +225,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
-    paddingVertical: 3,
+    height: 44,
     borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {
-    paddingVertical: 3,
+    height: 44,
     marginBottom: 10,
   }
 });

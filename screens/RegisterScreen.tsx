@@ -5,10 +5,19 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PaperComponent from '../components/paper';
 import RegisterForms from '../resources/forms/Register.validation';
+import { setFormData, submitApplication } from '../store/actions/Form.action';
+import { selectFormData, selectFormStep } from '../store/selectors/form.selector';
+import { registerHandler } from '../store/actions/Register.action';
 
-export default function RegisterScreen() {
+function RegisterScreen({
+  formData,
+  currentStep,
+  registerHandler, 
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
   const {sellerIdForm, emailForm, fullNameForm, phoneNumberForm} = RegisterForms;
@@ -24,7 +33,8 @@ export default function RegisterScreen() {
     navigation.canGoBack() ? navigation.goBack() : null
   }
 
-  function onRegisterPress() {
+  const onRegisterPress =  async (data) => {
+    registerHandler(data, formData, currentStep)
     navigation.navigate('LoanCalculation');
   }
   
@@ -161,6 +171,18 @@ export default function RegisterScreen() {
   );
 }
 
+const mapStateToProps = createStructuredSelector({
+  formData: selectFormData,
+  currentStep: selectFormStep,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setFormData: (payload) => dispatch(setFormData(payload)),
+  registerHandler: (payload, formData, currentStep) => dispatch(registerHandler(payload, formData, currentStep))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+
 const styles = StyleSheet.create({
   main: {
     flex: 1,
@@ -196,12 +218,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
-    paddingVertical: 3,
+    height: 44,
     borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {
-    paddingVertical: 3,
+    height: 44,
     marginBottom: 10,
   }
 });

@@ -11,6 +11,10 @@ import Fonts from '../resources/Fonts';
 import { FontWeightConfig } from '../resources/FontConfig';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import { createStructuredSelector } from 'reselect';
+import { selectFormData, selectFormStep } from '../store/selectors/form.selector';
+import { setFormData, uploadHandler } from '../store/actions/DocumentUpload.action';
+import { connect } from 'react-redux';
 
 interface Document{
   label: string;
@@ -18,7 +22,12 @@ interface Document{
   data: string | undefined;
 }
 
-export default function DocumentUploadScreen({route}:NativeStackScreenProps<RootStackParamList, 'DocumentUpload'>) {
+function DocumentUploadScreen({
+  formData,
+  currentStep,
+  uploadHandler,
+  setFormData
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
   
@@ -28,10 +37,15 @@ export default function DocumentUploadScreen({route}:NativeStackScreenProps<Root
   ]);
 
   function onBackPress() {
+    setFormData({currentStep: currentStep-1})
     navigation.canGoBack() ? navigation.goBack() : null
   }
 
   function onNextPress() {
+    uploadHandler({
+      idcard: documents[0].data,
+      selfie: documents[1].data
+    }, formData, currentStep);
     navigation.navigate('PersonalData');
   }
 
@@ -129,6 +143,18 @@ export default function DocumentUploadScreen({route}:NativeStackScreenProps<Root
   );
 }
 
+const mapStateToProps = createStructuredSelector({
+  formData: selectFormData,
+  currentStep: selectFormStep,
+});
+
+const mapDispatchToProps = (dispatch:any) => ({
+  setFormData: (payload:any) => dispatch(setFormData(payload)),
+  uploadHandler: (payload:any, formData:any, currentStep:number) => dispatch(uploadHandler(payload, formData, currentStep))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentUploadScreen);
+
 const styles = StyleSheet.create({
   main: {
     flex: 1,
@@ -197,12 +223,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
-    paddingVertical: 3,
+    height: 44,
     borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {
-    paddingVertical: 3,
+    height: 44,
     marginBottom: 10,
   }
 });

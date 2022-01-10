@@ -1,0 +1,4 @@
+export const STORE_TYPES = {
+  SET_FORM: 'SET_FORM',
+  RESET_FORM: 'RESET_FORM'
+}

@@ -3,6 +3,7 @@ import Axios from 'axios';
 const AxiosInstance = Axios.create({
   headers: {
     Accept: 'application/json',
+    Authorization: 'Bearer 879e2d46fe9603bbbf632773a121cd'
   },
 });
 

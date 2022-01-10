@@ -78,13 +78,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
+    height: 44,
     paddingVertical: 3,
     borderWidth: 1,
     backgroundColor: 'white',
     marginBottom: 10,
   },
   btnNext: {
-    paddingVertical: 3
+    height: 44,
   }
 });
 

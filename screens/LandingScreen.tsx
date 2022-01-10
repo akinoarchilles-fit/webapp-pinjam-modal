@@ -23,7 +23,7 @@ export default function LandingScreen() {
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
       <PaperComponent.Button onPress={onStartPress}>Mulai ajukan</PaperComponent.Button>
-      <IconButton icon={'cellphone-settings-variant'} color={theme.colors.primary} onPress={() => navigation.navigate('DeviceInfoOverlay')}/>
+      <IconButton icon={'cellphone-android'} color={theme.colors.primary} onPress={() => navigation.navigate('DeviceInfoOverlay')}/>
     </View>
   );
 }

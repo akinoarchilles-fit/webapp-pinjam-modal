@@ -6,23 +6,34 @@ import Lodash from 'lodash';
 import * as React from 'react';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PaperComponent from '../components/paper';
 import { FontWeightConfig } from '../resources/FontConfig';
 import Fonts from '../resources/Fonts';
 import Utility from '../resources/Utility';
+import { loanHandler, setFormData } from '../store/actions/Loan.action';
+import { selectFormData, selectFormStep } from '../store/selectors/form.selector';
 
-export default function LoanCalculationScreen() {
+function LoanCalculationScreen({
+  formData,
+  currentStep,
+  setFormData,
+  loanHandler
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
-  const tenorList = ['3 Bulan', '6 Bulan', '9 Bulan'];
+  const tenorList = ['3 Bulan', '6 Bulan', '12 Bulan'];
   const [loanAmount,setLoanAmount] = React.useState(1000000);
   const [selectedTenor, setTenor] = React.useState(0);
 
   function onBackPress() {
+    setFormData({currentStep: currentStep-1})
     navigation.canGoBack() ? navigation.goBack() : null
   }
 
   function onNextPress() {
+    loanHandler({amount: loanAmount, duration: tenorList[selectedTenor].split(' ')[0]}, formData, currentStep)
     navigation.navigate('DocumentUpload');
   }
 
@@ -126,6 +137,18 @@ export default function LoanCalculationScreen() {
   );
 }
 
+const mapStateToProps = createStructuredSelector({
+  formData: selectFormData,
+  currentStep: selectFormStep,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setFormData: (payload) => dispatch(setFormData(payload)),
+  loanHandler: (payload, formData, currentStep) => dispatch(loanHandler(payload, formData, currentStep))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoanCalculationScreen);
+
 const styles = StyleSheet.create({
   main: {
     flex: 1,
@@ -186,12 +209,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
-    paddingVertical: 3,
+    height: 44,
     borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {
-    paddingVertical: 3,
+    height: 44,
     marginBottom: 10,
   }
 });

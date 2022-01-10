@@ -6,16 +6,28 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PaperComponent from '../components/paper';
-import OnlineStoreForm from '../resources/forms/OnlineStoreForms';
+import OnlineStoreForm from '../resources/forms/OnlineStoreForms'
+import { nextHandler, setFormData } from '../store/actions/OnlineStore.action';
+import { selectFormData, selectFormStep, selectIndustryType, selectLoadingForm, selectWorkingLength } from '../store/selectors/form.selector';
 
 
-export default function OnlineStoreDataScreen() {
+function OnlineStoreDataScreen({
+  loadingForm,
+  formData,
+  currentStep,
+  workingLengthSelection,
+  industryTypeSelection,
+  setFormData,
+  nextHandler,
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
   const { fullNameForm, phoneNumberForm } = OnlineStoreForm;
-  const durationList = ['3 Bulan', '6 Bulan', '9 Bulan'];
-  const [selectedDuration, setDuration] = React.useState(0);
+  const [selectedIndustry, setIndustry] = React.useState(-1);
+  const [selectedDuration, setDuration] = React.useState(-1);
 
   const {
     handleSubmit,
@@ -25,10 +37,16 @@ export default function OnlineStoreDataScreen() {
   } = useForm();
 
   function onBackPress() {
+    setFormData({currentStep: currentStep-1})
     navigation.canGoBack() ? navigation.goBack() : null
   }
 
-  function onNextPress() {
+  const onNextPress = async(data: any) => {
+    nextHandler({
+      ...data,
+      industry_type: industryTypeSelection[selectedIndustry].id,
+      work_type: workingLengthSelection[selectedDuration].id
+    }, formData, currentStep)
     navigation.navigate('BankingData');
   }
 
@@ -44,7 +62,7 @@ export default function OnlineStoreDataScreen() {
                 name='instagram'
                 control={control}
                 rules={{ required: true, pattern: fullNameForm.regexPattern }}
-                defaultValue=''
+                defaultValue={''}
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
                     item={{ ...fullNameForm, label: 'Akun Instagram' }}
@@ -60,11 +78,11 @@ export default function OnlineStoreDataScreen() {
               <Controller
                 name='facebook'
                 control={control}
-                rules={{ required: true, pattern: fullNameForm.regexPattern }}
+                rules={{ pattern: fullNameForm.regexPattern }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
-                    item={{ ...fullNameForm, label: 'Akun Facebook' }}
+                    item={{ ...fullNameForm, label: 'Akun Facebook', errorMessage: '*Akun Facebook tidak valid', }}
                     value={value}
                     error={errors.facebook}
                     editable={true}
@@ -77,11 +95,11 @@ export default function OnlineStoreDataScreen() {
               <Controller
                 name='line'
                 control={control}
-                rules={{ required: true, pattern: fullNameForm.regexPattern }}
+                rules={{ pattern: fullNameForm.regexPattern }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
-                    item={{ ...fullNameForm, label: 'Akun Line' }}
+                    item={{ ...fullNameForm, label: 'Akun Line', errorMessage: '*Akun Line tidak valid', }}
                     value={value}
                     error={errors.line}
                     editable={true}
@@ -94,11 +112,11 @@ export default function OnlineStoreDataScreen() {
               <Controller
                 name='tokopedia'
                 control={control}
-                rules={{ required: true, pattern: fullNameForm.regexPattern }}
+                rules={{ pattern: fullNameForm.regexPattern }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
-                    item={{ ...fullNameForm, label: 'Akun Tokopedia' }}
+                    item={{ ...fullNameForm, label: 'Akun Tokopedia', errorMessage: '*Akun Tokopedia tidak valid', }}
                     value={value}
                     error={errors.tokopedia}
                     editable={true}
@@ -111,11 +129,11 @@ export default function OnlineStoreDataScreen() {
               <Controller
                 name='shopee'
                 control={control}
-                rules={{ required: true, pattern: fullNameForm.regexPattern }}
+                rules={{ pattern: fullNameForm.regexPattern }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
-                    item={{ ...fullNameForm, label: 'Akun Shopee' }}
+                    item={{ ...fullNameForm, label: 'Akun Shopee', errorMessage: '*Akun Shopee tidak valid', }}
                     value={value}
                     error={errors.shopee}
                     editable={true}
@@ -128,7 +146,7 @@ export default function OnlineStoreDataScreen() {
               <Controller
                 name='whatsapp'
                 control={control}
-                rules={{ required: true, pattern: phoneNumberForm.regexPattern }}
+                rules={{ pattern: phoneNumberForm.regexPattern }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
@@ -147,10 +165,10 @@ export default function OnlineStoreDataScreen() {
                 onPress={Lodash.debounce(
                   () =>
                     navigation.navigate('OptionForm', {
-                      alias: 'Lama Usaha',
-                      data: durationList,
-                      selected: selectedDuration,
-                      onPressHandler: (value:number)=>{setDuration(value)}
+                      alias: 'Pilih Industry',
+                      data: industryTypeSelection,
+                      selected: selectedIndustry,
+                      onPressHandler: (value:number)=>{setIndustry(value)}
                     }),
                   1000,
                   {
@@ -161,7 +179,7 @@ export default function OnlineStoreDataScreen() {
                 <PaperComponent.Input
                   dense
                   label={'Daftar Industri'}
-                  value={'Teknologi'}
+                  value={industryTypeSelection[selectedIndustry]?.category ?? ''}
                   placeholder={'Pilih industri'}
                   onChangeText={() => { }}
                   onEndEditing={() => { }}
@@ -171,10 +189,10 @@ export default function OnlineStoreDataScreen() {
                   onPressIn={Lodash.debounce(
                     () =>
                       navigation.navigate('OptionForm', {
-                        alias: 'Lama Usaha',
-                        data: durationList,
-                        selected: selectedDuration,
-                        onPressHandler: (value:number)=>{setDuration(value)}
+                        alias: 'Pilih Industri',
+                        data: industryTypeSelection,
+                        selected: selectedIndustry,
+                        onPressHandler: (value:number)=>{setIndustry(value)}
                       }),
                     1000,
                     {
@@ -187,10 +205,10 @@ export default function OnlineStoreDataScreen() {
                       name={'chevron-down'}
                       onPress={() =>
                         navigation.navigate('OptionForm', {
-                          alias: 'Lama Usaha',
-                          data: durationList,
-                          selected: selectedDuration,
-                          onPressHandler: (value:number)=>{setDuration(value)}
+                          alias: 'Pilih Industri',
+                          data: industryTypeSelection,
+                          selected: selectedIndustry,
+                          onPressHandler: (value:number)=>{setIndustry(value)}
                         })
                       }
                     />
@@ -205,7 +223,7 @@ export default function OnlineStoreDataScreen() {
                   () =>
                     navigation.navigate('OptionForm', {
                       alias: 'Lama Usaha',
-                      data: durationList,
+                      data: workingLengthSelection,
                       selected: selectedDuration,
                       onPressHandler: (value:number)=>{setDuration(value)}
                     }),
@@ -218,7 +236,7 @@ export default function OnlineStoreDataScreen() {
                 <PaperComponent.Input
                   dense
                   label={'Lama Usaha'}
-                  value={durationList[selectedDuration]}
+                  value={workingLengthSelection[selectedDuration]?.category ?? ''}
                   placeholder={'Pilih lama usaha'}
                   onChangeText={() => { }}
                   onEndEditing={() => { }}
@@ -229,7 +247,7 @@ export default function OnlineStoreDataScreen() {
                     () =>
                       navigation.navigate('OptionForm', {
                         alias: 'Lama Usaha',
-                        data: durationList,
+                        data: workingLengthSelection,
                         selected: selectedDuration,
                         onPressHandler: (value:number)=>{setDuration(value)}
                       }),
@@ -245,7 +263,7 @@ export default function OnlineStoreDataScreen() {
                       onPress={() =>
                         navigation.navigate('OptionForm', {
                           alias: 'Lama Usaha',
-                          data: durationList,
+                          data: workingLengthSelection,
                           selected: selectedDuration,
                           onPressHandler: (value:number)=>{setDuration(value)}
                         })
@@ -262,7 +280,8 @@ export default function OnlineStoreDataScreen() {
         <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={styles.btnNext}>
+        })} buttonStyle={styles.btnNext}
+        disabled={selectedDuration < 0 || selectedIndustry < 0}>
           Lanjutkan
         </PaperComponent.Button>
         <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
@@ -276,6 +295,21 @@ export default function OnlineStoreDataScreen() {
     </View>
   );
 }
+
+const mapStateToProps = createStructuredSelector({
+  loadingForm: selectLoadingForm,
+  formData: selectFormData,
+  currentStep: selectFormStep,
+  workingLengthSelection: selectWorkingLength,
+  industryTypeSelection: selectIndustryType,
+});
+
+const mapDispatchToProps = (dispatch:any) => ({ 
+  setFormData: (payload:any) => dispatch(setFormData(payload)),
+  nextHandler: (payload:any, formData:any, currentStep:number) => dispatch(nextHandler(payload, formData, currentStep))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnlineStoreDataScreen);
 
 const styles = StyleSheet.create({
   main: {
@@ -308,12 +342,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
-    paddingVertical: 3,
+    height: 44,
     borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {
-    paddingVertical: 3,
+    height: 44,
     marginBottom: 10,
   }
 });

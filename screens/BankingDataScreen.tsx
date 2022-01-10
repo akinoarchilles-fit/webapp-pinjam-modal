@@ -6,15 +6,28 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PaperComponent from '../components/paper';
 import BankingForm from '../resources/forms/Banking.validation';
+import { nextHandler } from '../store/actions/Banking.action';
+import { setFormData } from '../store/actions/DocumentUpload.action';
+import { getMasterFormData } from '../store/actions/Form.action';
+import { selectBank, selectFormData, selectFormStep, selectLoadingForm } from '../store/selectors/form.selector';
 
 
-export default function BankingDataScreen() {
+function BankingDataScreen({
+  loadingForm,
+  formData,
+  currentStep,
+  bankSelection,
+  setFormData,
+  nextHandler
+}) {
   const navigation = useNavigation();
   const theme = useTheme();
   const { bankingNameForm, bankingNumberForm, bankList } = BankingForm;
-  const [selectedBank, setSelectedBank] = React.useState(0);
+  const [selectedBank, setSelectedBank] = React.useState(-1);
 
   const {
     handleSubmit,
@@ -24,10 +37,15 @@ export default function BankingDataScreen() {
   } = useForm();
 
   function onBackPress() {
+    setFormData({currentStep: currentStep-1})
     navigation.canGoBack() ? navigation.goBack() : null
   }
 
-  function onNextPress() {
+  const onNextPress = async (data:any) => {
+    nextHandler({
+      ...data,
+      bank_id: bankSelection[selectedBank].id,
+    }, formData, currentStep)
     navigation.navigate('AdditionalData');
   }
 
@@ -79,7 +97,7 @@ export default function BankingDataScreen() {
                   () =>
                     navigation.navigate('OptionForm', {
                       alias: 'Nama Bank',
-                      data: bankList,
+                      data: bankSelection,
                       selected: selectedBank,
                       onPressHandler: (value:number)=>{setSelectedBank(value)}
                     }),
@@ -92,7 +110,7 @@ export default function BankingDataScreen() {
                 <PaperComponent.Input
                   dense
                   label={'Nama Bank'}
-                  value={bankList[selectedBank]}
+                  value={bankSelection[selectedBank]?.value ?? ''}
                   placeholder={'Nama Bank'}
                   onChangeText={() => { }}
                   onEndEditing={() => { }}
@@ -103,7 +121,7 @@ export default function BankingDataScreen() {
                     () =>
                       navigation.navigate('OptionForm', {
                         alias: 'Nama Bank',
-                        data: bankList,
+                        data: bankSelection,
                         selected: selectedBank,
                         onPressHandler: (value:number)=>{setSelectedBank(value)}
                       }),
@@ -136,7 +154,8 @@ export default function BankingDataScreen() {
         <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={styles.btnNext}>
+        })} buttonStyle={styles.btnNext}
+        disabled={selectedBank < 0}>
           Lanjutkan
         </PaperComponent.Button>
         <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
@@ -150,6 +169,20 @@ export default function BankingDataScreen() {
     </View>
   );
 }
+
+const mapStateToProps = createStructuredSelector({
+  loadingForm: selectLoadingForm,
+  formData: selectFormData,
+  currentStep: selectFormStep,
+  bankSelection: selectBank,
+});
+
+const mapDispatchToProps = (dispatch:any) => ({ 
+  setFormData: (payload:any) => dispatch(setFormData(payload)),
+  nextHandler: (payload:any, formData:any, currentStep:number) => dispatch(nextHandler(payload, formData, currentStep))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(BankingDataScreen);
 
 const styles = StyleSheet.create({
   main: {
@@ -182,12 +215,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   btnBack: {
-    paddingVertical: 3,
+    height: 44,
     borderWidth: 1,
     backgroundColor: 'white',
   },
   btnNext: {
-    paddingVertical: 3,
+    height: 44,
     marginBottom: 10,
   }
 });

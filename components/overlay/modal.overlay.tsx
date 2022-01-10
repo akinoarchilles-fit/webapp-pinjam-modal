@@ -83,7 +83,7 @@ function OptionForm ({
               contentContainerStyle={{flexGrow: 1}}
               renderItem={({item, index}) => (
                 <List.Item
-                  title={typeof item === 'object' ? item.nama : item}
+                  title={typeof item === 'object' ? item.category ?? item.value : item}
                   titleStyle={styles.itemTitle}
                   titleNumberOfLines={2}
                   style={[

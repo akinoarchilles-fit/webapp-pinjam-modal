@@ -2,7 +2,8 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Dimensions, Platform, StyleSheet, useColorScheme, View } from 'react-native';
-import { IconButton, Provider as PaperProvider, useTheme } from 'react-native-paper';
+import { Provider as PaperProvider, useTheme } from 'react-native-paper';
+import { Provider } from 'react-redux';
 import DateForm from '../components/overlay/date.overlay';
 import DeviceInfoOverlay from '../components/overlay/deviceinfo.overlay';
 import ImagePreviewOverlay from '../components/overlay/imagepreview.overlay';
@@ -10,7 +11,6 @@ import OptionForm from '../components/overlay/modal.overlay';
 import UploadGuideModal from '../components/overlay/uploadguide.overlay';
 import PaperComponent from '../components/paper';
 import Constants from '../resources/Constants';
-import { FontWeightConfig } from '../resources/FontConfig';
 import Fonts from '../resources/Fonts';
 import AdditionalDataScreen from '../screens/AdditionalDataScreen';
 import BankingDataScreen from '../screens/BankingDataScreen';
@@ -24,19 +24,21 @@ import PersonalDataScreen from '../screens/PersonalDataScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import SuccessApplyScreen from '../screens/SuccessApply';
 import TermsConditionScreen from '../screens/TermsConditionScreen';
+import store from '../store/store';
 import { RootStackParamList } from '../types';
-
 
 export default function Navigation() {
   const scheme = useColorScheme();
   const theme = scheme === 'dark' ? Constants.PMDarkTheme : Constants.PMDefaultTheme;
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer
-        theme={theme}>
-        <RootNavigator />
-      </NavigationContainer>
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer
+          theme={theme}>
+          <RootNavigator />
+        </NavigationContainer>
+      </PaperProvider>
+    </Provider>
   );
 }
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -55,8 +57,6 @@ enum ScreenStack {
 
 function RootNavigator() {
   const theme = useTheme();
-  const navigation = useNavigation();
-  const screenOptions: NativeStackNavigationOptions = { headerTitleAlign: 'center', headerTitleStyle: styles.title, headerBackVisible: false }
   return (
     <View style={{ backgroundColor: theme.colors.background }}>
       <View style={styles.viewport}>
@@ -64,8 +64,8 @@ function RootNavigator() {
           <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition} />) }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register} />) }} />
-          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.DocumentUpload} />) }} />
+          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
           <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.PersonalData} />) }} />
           <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OnlineStoreData} />) }} />
           <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.BankingData} />) }} />
