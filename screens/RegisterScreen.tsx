@@ -16,7 +16,8 @@ import { registerHandler } from '../store/actions/Register.action';
 function RegisterScreen({
   formData,
   currentStep,
-  registerHandler, 
+  registerHandler,
+  submitApplication
 }) {
   const navigation = useNavigation();
   const theme = useTheme();
@@ -178,7 +179,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   setFormData: (payload) => dispatch(setFormData(payload)),
-  registerHandler: (payload, formData, currentStep) => dispatch(registerHandler(payload, formData, currentStep))
+  registerHandler: (payload, formData, currentStep) => dispatch(registerHandler(payload, formData, currentStep)),
+  submitApplication: (formData: []) => dispatch(submitApplication(formData))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

@@ -61,15 +61,15 @@ function RootNavigator() {
     <View style={{ backgroundColor: theme.colors.background }}>
       <View style={styles.viewport}>
         <Stack.Navigator>
+          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.AdditionalData} />) }} />
           <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition} />) }} />
+          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register} />) }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.DocumentUpload} />) }} />
-          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
           <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.PersonalData} />) }} />
           <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OnlineStoreData} />) }} />
           <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.BankingData} />) }} />
-          <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.AdditionalData} />) }} />
           <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OTPVerification} />) }} />
           <Stack.Screen name="Success" component={SuccessApplyScreen} options={{ headerShown: false }} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ headerShown: false }} />

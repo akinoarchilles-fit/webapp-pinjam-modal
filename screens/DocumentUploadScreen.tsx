@@ -7,6 +7,8 @@ import { Alert, Image, Platform, ScrollView, StyleSheet, TouchableOpacity, View 
 import { Avatar, IconButton, useTheme } from 'react-native-paper';
 import PaperComponent from '../components/paper';
 import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
+
 import Fonts from '../resources/Fonts';
 import { FontWeightConfig } from '../resources/FontConfig';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -50,8 +52,16 @@ function DocumentUploadScreen({
   }
 
   async function openPicker(index: number) {
-    const result = await DocumentPicker.getDocumentAsync();
-    if(result.type == 'success') {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
       documents[index].data = result.uri
       setDocuments([...documents]);
     }

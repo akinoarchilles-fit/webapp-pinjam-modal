@@ -85,11 +85,32 @@ export const getLocationList = (region?:string, city?:string, district?:string, 
 }
 
 export const submitApplication = (formData:Array<Object>) => async(dispatch:any) => {
-  let applyData = {}
+  let applyData = new FormData();
   formData.map((e, i) => {
     Object.keys(e).map(key => {
-      applyData[key] = e[key];
+      console.log(key, e[key])
+      applyData.append(key, e[key]);
     })
   })
-  console.log(applyData)
+  await fetch(formData[2].id_card_image)
+  .then(res => res.blob())
+  .then(blob => {
+  const id_card_image = new File([blob], "id_card_image.png");
+  applyData.set('id_card_image', id_card_image)
+  })
+  await fetch(formData[2].selfie_id_card_image)
+  .then(res => res.blob())
+  .then(blob => {
+  const selfie_id_card_image = new File([blob], "selfie_id_card_image.png");
+  applyData.set('selfie_id_card_image', selfie_id_card_image)})
+  applyData.set('is_final', true);
+  applyData.set('current_step', formData.length.toString());
+  applyData.set('reference_type', "GRADE"),
+  applyData.set('reference_id', "SP_VIP")
+  try {
+    await FormService.submitApplication(applyData);
+    dispatch(setFormData({isSuccessApply: true}))
+  } catch(error) {
+    dispatch(setFormData({applyErrorMessage: error.error}))
+  }
 }

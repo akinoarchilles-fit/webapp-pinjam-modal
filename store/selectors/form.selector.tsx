@@ -19,6 +19,11 @@ export const selectLoadingForm = createSelector(
   }
 )
 
+export const selectSuccessApply = createSelector(
+  [selectForm],
+  (state) => state.isSuccessApply
+)
+
 export const selectGender = createSelector(
   [selectForm],
   (state) => state.genderSelection
@@ -57,4 +62,14 @@ export const selectIndustryType = createSelector(
 export const selectReferenceRelation = createSelector(
   [selectForm],
   (state) => state.referenceRelationTypeSelection
+)
+
+export const selectApplyErrorMessage = createSelector(
+  [selectForm],
+  (state) => state.applyErrorMessage
+)
+
+export const selectOTPVerified = createSelector(
+  [selectForm],
+  (state) => state.isOTPVerified
 )

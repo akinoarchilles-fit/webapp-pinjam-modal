@@ -4,6 +4,9 @@ const initState = {
   form: [
 
   ],
+  isSuccessApply: false,
+  applyErrorMessage: null,
+  isOTPVerified: false,
   currentStep: 0,
   loadingForm: false,
   genderSelection: [],

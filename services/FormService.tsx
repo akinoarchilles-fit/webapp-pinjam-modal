@@ -39,15 +39,48 @@ class FormService {
     });
   }
 
-  static getOTP() {
+  static getOTP(body: Object) {
     return new Promise(async (resolve, reject) => {
       try {
-        let apiUrl = ''
-        const response = await AxiosInstance.get(apiUrl);
+        let apiUrl = 'https://api-development.pinjammodal.id:8443/supplier/otp/resend'
+        const response = await AxiosInstance.post(apiUrl, body);
         resolve(response.data);
       } catch (error) {
         console.log('getOTP: ', error);
         reject(error);
+      }
+    });
+  }
+
+  static confirmOTP(body: Object) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let apiUrl = 'https://api-development.pinjammodal.id:8443/supplier/otp/confirmation'
+        const response = await AxiosInstance.post(apiUrl, body);
+        resolve(response.data);
+      } catch (error) {
+        console.log('confirmOTP: ', error);
+        reject(error.response.data);
+      }
+    });
+  }
+
+  static submitApplication(body: FormData) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let apiUrl = 'https://api-development.pinjammodal.id:8443/supplier/loan/apply';
+        const response = await AxiosInstance.post(apiUrl, body, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer 559e2d46fe5503bbbf633273a1222'
+          }
+        })
+        resolve(response.data);
+      } catch (error) {
+        console.log('submitApplication: ', error);
+        resolve(true)
+        reject(error.response.data);
       }
     });
   }
