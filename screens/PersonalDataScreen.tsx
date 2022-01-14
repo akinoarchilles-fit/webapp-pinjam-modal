@@ -476,7 +476,7 @@ function PersonalDataScreen({
                 defaultValue={formData[currentStep]?.address ?? ''}
                 render={({ field: { onChange, value } }) => (
                   <PaperComponent.Input
-                    item={{...textOnlyForm, label: 'Alamat', errorMessage: 'Alamat tidak valid atau belum diisi'}}
+                    item={{...textOnlyForm, label: 'Alamat', placeHolder: 'Alamat domisili', errorMessage: 'Alamat tidak valid atau belum diisi'}}
                     value={value}
                     error={errors.address}
                     editable={true}

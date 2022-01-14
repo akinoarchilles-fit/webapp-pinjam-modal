@@ -79,7 +79,6 @@ class FormService {
         resolve(response.data);
       } catch (error) {
         console.log('submitApplication: ', error);
-        resolve(true)
         reject(error.response.data);
       }
     });
