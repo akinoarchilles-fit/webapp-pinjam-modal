@@ -4,18 +4,21 @@ import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { TextInput, useTheme } from 'react-native-paper';
+import { Snackbar, TextInput, useTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PaperComponent from '../components/paper';
 import AdditionalDataForm from '../resources/forms/AdditionalData.validation';
 import { nextHandler, setFormData } from '../store/actions/AdditionalData.action';
-import { selectFormData, selectFormStep, selectLoadingForm } from '../store/selectors/form.selector';
+import { selectApplyErrorMessage, selectFormData, selectFormStep, selectLoadingForm, selectSuccessApply } from '../store/selectors/form.selector';
 
 
 function AdditionalDataScreen({
   formData,
   currentStep,
+  loadingForm,
+  applyErrorMessage,
+  isSuccessApply,
   setFormData,
   nextHandler
 }) {
@@ -35,8 +38,13 @@ function AdditionalDataScreen({
       loan_purpose: loanPurposeList[selectedLoanPurpose],
       payment_options: repaymentList[selectedRepayment]
     }, formData, currentStep)
-    navigation.navigate('OTPVerification');
   }
+
+  React.useEffect(() => {
+    if(isSuccessApply) {
+      navigation.navigate('OTPVerification');
+    }
+  }, [isSuccessApply])
 
   return (
     <View style={styles.main}>
@@ -166,18 +174,27 @@ function AdditionalDataScreen({
         <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
           leading: true,
           trailing: false,
-        })} buttonStyle={styles.btnNext}
-        disabled={selectedLoanPurpose < 0 || selectedRepayment < 0}>
+        })} buttonStyle={styles.btnNext} loading={loadingForm}
+        disabled={selectedLoanPurpose < 0 || selectedRepayment < 0 || loadingForm}>
           Lanjutkan
         </PaperComponent.Button>
         <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
             leading: true,
             trailing: false,
           })} buttonStyle={[styles.btnBack, { borderColor: theme.colors.primary }]} buttonLabelStyle={{color: theme.colors.primary}} 
-          disabled={!navigation.canGoBack()}>
+          disabled={!navigation.canGoBack() || loadingForm}>
           Kembali
         </PaperComponent.Button>
       </View>
+      <Snackbar
+        visible={applyErrorMessage !== null}
+        duration={3000}
+        onDismiss={() => {
+          setFormData({applyErrorMessage: null})
+        }}
+      >
+        {applyErrorMessage}
+      </Snackbar>
     </View>
   );
 }
@@ -185,6 +202,9 @@ function AdditionalDataScreen({
 const mapStateToProps = createStructuredSelector({
   formData: selectFormData,
   currentStep: selectFormStep,
+  loadingForm: selectLoadingForm,
+  applyErrorMessage: selectApplyErrorMessage,
+  isSuccessApply: selectSuccessApply,
 });
 
 const mapDispatchToProps = (dispatch:any) => ({ 

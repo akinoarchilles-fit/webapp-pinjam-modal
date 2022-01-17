@@ -16,11 +16,10 @@ import { selectApplyErrorMessage, selectFormData, selectFormStep, selectLoadingF
 
 function OTPVerificationScreen({
   isOTPVerified,
-  applyErrorMessage,
-  isSuccessApply,
   loadingForm,
   formData,
   currentStep,
+  applyErrorMessage,
   getOTPRequest,
   verifyOTP,
   setFormData,
@@ -37,21 +36,19 @@ function OTPVerificationScreen({
   } = useForm();
 
   const onNextPress = async(data: any) => {
-    if(isOTPVerified) {
-      nextHandler({...data}, formData, currentStep)
-      navigation.navigate('Success');
-    }
-    else {
-      // verifyOTP(formData[0].email, data.otp)
-      verifyOTP("test@gmail.com", data.otp)
-    }
+    verifyOTP(formData[0].email, data.otp)
   }
 
   React.useEffect(() => {
-    if(isSuccessApply && applyErrorMessage == '') {
-      getOTPRequest(formData[0].email)
+    getOTPRequest(formData[0].email)
+  }, [])
+
+  React.useEffect(() => {
+    if(isOTPVerified) {
+      nextHandler({otp: getValues('otp')}, formData, currentStep)
+      navigation.navigate('Success');
     }
-  }, [applyErrorMessage, isSuccessApply]);
+  }, [isOTPVerified])
 
   return (
     <View style={styles.main}>
@@ -61,7 +58,7 @@ function OTPVerificationScreen({
             <View style={[styles.container, { borderColor: theme.colors.surface }]}>
               <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
 
-              {isSuccessApply ? <View style={styles.formContainer}>
+              <View style={styles.formContainer}>
                 <PaperComponent.Headline>Masukkan Kode Verifikasi</PaperComponent.Headline>
                 <PaperComponent.Subheading style={{textAlign: 'center'}}>Kode verifikasi telah dikirim melalui SMS ke nomor handphone Anda</PaperComponent.Subheading>
                 <View style={styles.formField}>
@@ -81,13 +78,12 @@ function OTPVerificationScreen({
                     )}
                   />
                 </View>
-              </View> : null}
+              </View>
             </View>
           </ScrollView>
         )
       }
-      {
-        isSuccessApply && !loadingForm ? <View style={styles.footer}>
+      {!loadingForm ? <View style={styles.footer}>
         <PaperComponent.Button onPress={Lodash.debounce(handleSubmit(onNextPress), 1000, {
           leading: true,
           trailing: false,
@@ -96,32 +92,15 @@ function OTPVerificationScreen({
         </PaperComponent.Button>
       </View> : null
       }
-      {
-          <Snackbar
-            visible={applyErrorMessage !== null}
-            duration={3000}
-            onDismiss={() => {
-              if(isSuccessApply) {
-                console.log('working')
-                setFormData({applyErrorMessage: null})
-              }
-              else {
-                setFormData({currentStep: currentStep-1, applyErrorMessage: null})
-                navigation.canGoBack() ? navigation.goBack() : null
-              }
-            }}
-            action={{
-              label: 'Kembali',
-              disabled: isSuccessApply,
-              onPress: () => {
-                setFormData({currentStep: currentStep-1, applyErrorMessage: null})
-                navigation.canGoBack() ? navigation.goBack() : null
-              },
-            }}
-          >
-            {applyErrorMessage}
-          </Snackbar>
-      }
+      <Snackbar
+        visible={applyErrorMessage !== null}
+        duration={3000}
+        onDismiss={() => {
+          setFormData({applyErrorMessage: null})
+        }}
+      >
+        {applyErrorMessage}
+      </Snackbar>
     </View>
   );
 }
