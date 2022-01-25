@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import PaperComponent from '../paper';
 import * as Device from 'expo-device';
+import Constants from 'expo-constants';
 
 function DeviceInfoOverlay () {
   const [deviceType, setDeviceType] = React.useState('');
@@ -34,6 +35,7 @@ function DeviceInfoOverlay () {
       <PaperComponent.Caption>Platform API Level: {Device.platformApiLevel}</PaperComponent.Caption>
       <PaperComponent.Caption>Device Name: {Device.deviceName}</PaperComponent.Caption>
       <PaperComponent.Caption>Device Type: {deviceType}</PaperComponent.Caption>
+      <PaperComponent.Caption>Constant Platform: {JSON.stringify(Constants.platform?.web?.ua)}</PaperComponent.Caption>
     </ScrollView>
   );
 }

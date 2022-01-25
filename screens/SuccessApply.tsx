@@ -3,12 +3,16 @@ import { StatusBar } from 'expo-status-bar';
 import Lodash from 'lodash';
 import * as React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import * as Linking from 'expo-linking';
 import PaperComponent from '../components/paper';
 import { FontWeightConfig } from '../resources/FontConfig';
 import Fonts from '../resources/Fonts';
+import * as Device from 'expo-device';
+import Constants from 'expo-constants';
 
 export default function SuccessApplyScreen() {
   const navigation = useNavigation();
+
   function onBackPress() {
     // navigation.reset({
     //   index: 0,
@@ -18,11 +22,18 @@ export default function SuccessApplyScreen() {
     //     },
     //   ],
     // });
-    window.postMessage(JSON.stringify({
-      message: 'Success Apply',
-      action: 'close',
-      target: 'https://app.pinjammodal.id/dashboard'
-    }));
+    //Check is app or not
+    if(Constants.platform?.web?.ua.indexOf('PinjamModalApp')) {
+      window.postMessage(JSON.stringify({
+        message: 'Success Apply',
+        action: 'close',
+        target: 'https://app.pinjammodal.id/dashboard'
+      }));
+    }
+    else{
+      if(Device.osName === 'Android') Linking.openURL('https://play.google.com/store/apps/details?id=com.pinjammodal')
+      else Linking.openURL('https://apps.apple.com/id/app/pinjam-modal/id1449252717')
+    }
   }
   
   return (

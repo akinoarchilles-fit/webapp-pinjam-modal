@@ -61,6 +61,7 @@ function RootNavigator() {
     <View style={{ backgroundColor: theme.colors.background }}>
       <View style={styles.viewport}>
         <Stack.Navigator>
+          <Stack.Screen name="Success" component={SuccessApplyScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition} />) }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register} />) }} />
@@ -71,7 +72,6 @@ function RootNavigator() {
           <Stack.Screen name="BankingData" component={BankingDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.BankingData} />) }} />
           <Stack.Screen name="AdditionalData" component={AdditionalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.AdditionalData} />) }} />
           <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OTPVerification} />) }} />
-          <Stack.Screen name="Success" component={SuccessApplyScreen} options={{ headerShown: false }} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ headerShown: false }} />
           <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
             <Stack.Screen name="OptionForm" component={OptionForm} options={{ headerShown: false }} />
