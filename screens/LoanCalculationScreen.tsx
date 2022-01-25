@@ -12,20 +12,61 @@ import PaperComponent from '../components/paper';
 import { FontWeightConfig } from '../resources/FontConfig';
 import Fonts from '../resources/Fonts';
 import Utility from '../resources/Utility';
-import { loanHandler, setFormData } from '../store/actions/Loan.action';
-import { selectFormData, selectFormStep } from '../store/selectors/form.selector';
+import { calculateLoan, getLoanConfiguration, getPlafond, loanHandler, setFormData } from '../store/actions/Loan.action';
+import { selectFormData, selectFormStep, selectLoanCalculation, selectLoanConfiguration, selectLoanPlafond } from '../store/selectors/form.selector';
 
 function LoanCalculationScreen({
   formData,
   currentStep,
+  loanCalculationData,
+  loanPlafondData,
+  loanConfigurationData,
   setFormData,
+  getLoanCalculation,
+  getLoanConfiguration,
+  getPlafond,
   loanHandler
 }) {
   const navigation = useNavigation();
   const theme = useTheme();
-  const tenorList = ['3 Bulan', '6 Bulan', '12 Bulan'];
-  const [loanAmount,setLoanAmount] = React.useState(1000000);
+  const [tenorList, setTenorList] = React.useState(['3 Bulan', '6 Bulan', '12 Bulan']);
+  const [loanAmount,setLoanAmount] = React.useState(0);
   const [selectedTenor, setTenor] = React.useState(0);
+
+  React.useEffect(() => {
+    getLoanConfiguration(formData);
+    getPlafond()
+  }, [])
+
+  React.useEffect(() => {
+    setLoanAmount(loanConfigurationData?.dropdown_amount[0].max_amount)
+  }, [loanConfigurationData])
+
+  function populateTenorList(min:number, max:number) {
+    let newTenorList = [`${min} Bulan`];
+    let startValue = min;
+    for(let i=0;i<2;i++) {
+      let newValue = startValue * 2;
+      if(newValue > max) break;
+      else {
+        startValue = newValue
+        newTenorList.push(`${newValue} Bulan`)
+      }
+    }
+    setTenorList([...newTenorList]);
+  }
+
+  //Check Plafond
+  React.useEffect(() => {
+    if(loanPlafondData) {
+      for(let i = 0; i <= loanPlafondData.length; i++) {
+        if(loanAmount <= loanPlafondData[i].max_amount) {
+          populateTenorList(loanPlafondData[i].min_tenor, loanPlafondData[i].max_tenor)
+          break;
+        }
+      }
+    }
+  }, [loanAmount])
 
   function onBackPress() {
     setFormData({currentStep: currentStep-1})
@@ -38,6 +79,10 @@ function LoanCalculationScreen({
   }
 
   function onLoanAmountChanged(amount: number) {
+    getLoanCalculation({
+      amount: amount,
+      duration: tenorList[selectedTenor].split(' ')[0]
+    }, formData)
     setLoanAmount(amount);
   }
   
@@ -56,9 +101,9 @@ function LoanCalculationScreen({
               <Slider
                 style={{height: 40}}
                 value={loanAmount}
-                step={100000}
-                minimumValue={1000000}
-                maximumValue={10000000}
+                step={loanConfigurationData?.dropdown_amount[0].step}
+                minimumValue={loanConfigurationData?.dropdown_amount[0].min_amount}
+                maximumValue={loanConfigurationData?.dropdown_amount[0].max_amount}
                 minimumTrackTintColor={theme.colors.primary}
                 maximumTrackTintColor={theme.colors.accent}
                 thumbTintColor={theme.colors.primary}
@@ -75,7 +120,13 @@ function LoanCalculationScreen({
                       alias: 'Lama Pinjaman',
                       data: tenorList,
                       selected: selectedTenor,
-                      onPressHandler: (value:number)=>{setTenor(value)}
+                      onPressHandler: (value:number)=>{
+                        getLoanCalculation({
+                          amount: loanAmount,
+                          duration: tenorList[value].split(' ')[0]
+                        }, formData)
+                        setTenor(value)
+                      }
                     }),
                   1000,
                   {
@@ -98,22 +149,22 @@ function LoanCalculationScreen({
           <View style={styles.formContainer}>
             <View style={[styles.formField, styles.rowField]}>
               <PaperComponent.Title>Bunga</PaperComponent.Title>
-              <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+              <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(loanCalculationData?.interest)}</PaperComponent.Subheading>
             </View>
             <View style={[styles.formField, styles.rowField]}>
               <PaperComponent.Title>Biaya Admin</PaperComponent.Title>
-              <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+              <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(loanCalculationData?.adminCost)}</PaperComponent.Subheading>
             </View>
             <View style={[styles.formField, styles.rowField]}>
               <PaperComponent.Title>Total Pengembalian</PaperComponent.Title>
-              <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+              <PaperComponent.Subheading style={[styles.boldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(loanCalculationData?.repayment)}</PaperComponent.Subheading>
             </View>
           </View>
           <View style={[styles.separator, { backgroundColor: theme.colors.altSurface }]}/>
           <View style={styles.formContainer}>
             <View style={[styles.formField, styles.rowField]}>
               <PaperComponent.Title>Cicilan per Bulan</PaperComponent.Title>
-              <PaperComponent.Subheading style={[styles.extraBoldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(190000)}</PaperComponent.Subheading>
+              <PaperComponent.Subheading style={[styles.extraBoldText, { color: theme.colors.primary }]}>Rp. {Utility.thousandSeparator(loanCalculationData?.installment)}</PaperComponent.Subheading>
             </View>
           </View>
         </View>
@@ -122,7 +173,8 @@ function LoanCalculationScreen({
         <PaperComponent.Button onPress={Lodash.debounce(onNextPress, 1000, {
             leading: true,
             trailing: false,
-          })} buttonStyle={styles.btnNext}>
+          })} buttonStyle={styles.btnNext}
+          disabled={loanCalculationData == null}>
           Lanjutkan
         </PaperComponent.Button>
         <PaperComponent.Button onPress={Lodash.debounce(onBackPress, 1000, {
@@ -140,10 +192,16 @@ function LoanCalculationScreen({
 const mapStateToProps = createStructuredSelector({
   formData: selectFormData,
   currentStep: selectFormStep,
+  loanCalculationData: selectLoanCalculation,
+  loanConfigurationData: selectLoanConfiguration,
+  loanPlafondData: selectLoanPlafond
 });
 
 const mapDispatchToProps = dispatch => ({
   setFormData: (payload) => dispatch(setFormData(payload)),
+  getPlafond: () => dispatch(getPlafond()),
+  getLoanConfiguration: (formData) => dispatch(getLoanConfiguration(formData)),
+  getLoanCalculation: (payload, formData) => dispatch(calculateLoan(payload, formData)),
   loanHandler: (payload, formData, currentStep) => dispatch(loanHandler(payload, formData, currentStep))
 })
 

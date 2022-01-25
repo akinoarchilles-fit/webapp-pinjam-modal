@@ -22,7 +22,10 @@ const initState = {
   cityList: [],
   districtList: [],
   subdistrictList: [],
-  postalCodeList: []
+  postalCodeList: [],
+  loanConfigurationData: null,
+  loanPlafondData: null,
+  loanCalculationData: null,
 }
 
 export const formReducers = (state = initState, action) => {

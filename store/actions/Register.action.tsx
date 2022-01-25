@@ -13,7 +13,8 @@ export const registerHandler = (payload:any, formData:any, currentStep:number) =
       email: payload.email,
       password: payload.password,
       fullname: payload.fullName,
-      mobile_number: payload.phoneNumber
+      mobile_number: payload.phoneNumber,
+      seller_id: payload.sellerId
     }
     form[currentStep] = data;
     dispatch(setFormData({form: form, currentStep: currentStep+1}));

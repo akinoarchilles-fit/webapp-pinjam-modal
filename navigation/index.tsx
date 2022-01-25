@@ -63,8 +63,8 @@ function RootNavigator() {
         <Stack.Navigator>
           <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
           <Stack.Screen name="TermsCondition" component={TermsConditionScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.TermsCondition} />) }} />
-          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.Register} />) }} />
+          <Stack.Screen name="LoanCalculation" component={LoanCalculationScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.LoanCalculation} />) }} />
           <Stack.Screen name="DocumentUpload" component={DocumentUploadScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.DocumentUpload} />) }} />
           <Stack.Screen name="PersonalData" component={PersonalDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.PersonalData} />) }} />
           <Stack.Screen name="OnlineStoreData" component={OnlineStoreDataScreen} options={{ header: () => (<PaperComponent.Appbar hideLeftComponent title={ScreenStack.OnlineStoreData} />) }} />

@@ -10,14 +10,19 @@ import Fonts from '../resources/Fonts';
 export default function SuccessApplyScreen() {
   const navigation = useNavigation();
   function onBackPress() {
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'Landing',
-        },
-      ],
-    });
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [
+    //     {
+    //       name: 'Landing',
+    //     },
+    //   ],
+    // });
+    window.postMessage(JSON.stringify({
+      message: 'Success Apply',
+      action: 'close',
+      target: 'https://app.pinjammodal.id/dashboard'
+    }));
   }
   
   return (

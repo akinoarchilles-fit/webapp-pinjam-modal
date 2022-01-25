@@ -13,6 +13,45 @@ class FormService {
       }
     });
   }
+  
+  static getLoanConfiguration(body: Object) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const apiUrl = 'https://api-development.pinjammodal.id:8443/supplier/loan/configuration';
+        const response = await AxiosInstance.post(apiUrl, body);
+        resolve(response.data);
+      } catch (error) {
+        console.log('getProvince: ', error);
+        reject(error);
+      }
+    });
+  }
+
+  static getLoanPlafond() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const apiUrl = 'https://api-development.pinjammodal.id:8443/supplier/loan/minMaxPlafond';
+        const response = await AxiosInstance.post(apiUrl);
+        resolve(response.data);
+      } catch (error) {
+        console.log('getProvince: ', error);
+        reject(error);
+      }
+    });
+  }
+
+  static getLoanCalculation(body: Object) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const apiUrl = 'https://api-development.pinjammodal.id:8443/supplier/loan/calculation';
+        const response = await AxiosInstance.post(apiUrl, body);
+        resolve(response.data);
+      } catch (error) {
+        console.log('getProvince: ', error);
+        reject(error);
+      }
+    });
+  }
 
   static getProvince () {
     return new Promise(async (resolve, reject) => {

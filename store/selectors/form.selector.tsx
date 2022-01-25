@@ -24,6 +24,21 @@ export const selectSuccessApply = createSelector(
   (state) => state.isSuccessApply
 )
 
+export const selectLoanConfiguration = createSelector(
+  [selectForm],
+  (state) => state.loanConfigurationData
+)
+
+export const selectLoanPlafond = createSelector(
+  [selectForm],
+  (state) => state.loanPlafondData
+)
+
+export const selectLoanCalculation = createSelector(
+  [selectForm],
+  (state) => state.loanCalculationData
+)
+
 export const selectGender = createSelector(
   [selectForm],
   (state) => state.genderSelection
