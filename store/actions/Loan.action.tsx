@@ -8,16 +8,10 @@ export const setFormData = (payload) => ({
 
 export const getLoanConfiguration = (formData) => async(dispatch) => {
   try {
-    // let reqPayload = {
-    //   email: formData[0].email,
-    //   phone_number: formData[0].phone_number,
-    //   reference_id: formData[0].seller_id,
-    //   reference_type: 'seller_id'
-    // }
     let reqPayload = {
-      email: 'asdfasdf@asdf.co',
-      phone_number: '08123412341234',
-      reference_id: '1140021',
+      email: formData[0].email,
+      phone_number: formData[0].phone_number,
+      reference_id: formData[0].seller_id,
       reference_type: 'seller_id'
     }
     const { data } = await FormService.getLoanConfiguration(reqPayload)
@@ -47,7 +41,7 @@ export const calculateLoan = (payload, formData) => async(dispatch) => {
     let reqPayload = {
       loanAmount: payload.amount,
       loanLength: payload.duration,
-      reference_id: '1140021',
+      reference_id: formData[0].seller_id,
       reference_type: 'seller_id'
     }
     const { data } = await FormService.getLoanCalculation(reqPayload)
