@@ -23,7 +23,7 @@ export default function SuccessApplyScreen() {
     //   ],
     // });
     //Check is app or not
-    if(Constants.platform?.web?.ua.indexOf('PinjamModalApp')) {
+    if(Constants.platform?.web?.ua.indexOf('PinjamModalApp') > -1) {
       window.postMessage(JSON.stringify({
         message: 'Success Apply',
         action: 'close',
