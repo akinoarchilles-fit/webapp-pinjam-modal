@@ -17,7 +17,7 @@ const PersonalDataForm = {
     placeHolder: 'Tempat lahir',
     error: false,
     errorMessage: '*Tempat lahir harus diisi',
-    regexPattern: /^[A-Za-z.,]+$/,
+    regexPattern: /^[A-Za-z., ]+$/,
     keyboardType: 'default',
     inputType: 'text',
   },
