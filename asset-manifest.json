@@ -1,7 +1,7 @@
 {
   "files": {
-    "app.js": "/webapp-pinjam-modal/static/js/app.563e3830.chunk.js",
-    "app.js.map": "/webapp-pinjam-modal/static/js/app.563e3830.chunk.js.map",
+    "app.js": "/webapp-pinjam-modal/static/js/app.fc1e782c.chunk.js",
+    "app.js.map": "/webapp-pinjam-modal/static/js/app.fc1e782c.chunk.js.map",
     "runtime~app.js": "/webapp-pinjam-modal/static/js/runtime~app.27ced9ed.js",
     "runtime~app.js.map": "/webapp-pinjam-modal/static/js/runtime~app.27ced9ed.js.map",
     "static/js/2.1bcac547.chunk.js": "/webapp-pinjam-modal/static/js/2.1bcac547.chunk.js",
@@ -31,6 +31,6 @@
   "entrypoints": [
     "static/js/runtime~app.27ced9ed.js",
     "static/js/2.1bcac547.chunk.js",
-    "static/js/app.563e3830.chunk.js"
+    "static/js/app.fc1e782c.chunk.js"
   ]
 }
